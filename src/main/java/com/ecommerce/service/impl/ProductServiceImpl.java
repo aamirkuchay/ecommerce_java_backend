@@ -1,6 +1,8 @@
 package com.ecommerce.service.impl;
 
 import com.ecommerce.dto.ProductDto;
+import com.ecommerce.dto.ProductSizeDto;
+import com.ecommerce.dto.ProductWeightDto;
 import com.ecommerce.entity.Category;
 import com.ecommerce.entity.Product;
 import com.ecommerce.entity.ProductSize;
@@ -37,7 +39,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product saveProduct(ProductDto productDto) throws IOException {
-        Files.createDirectories(Paths.get(UPLOAD_DIR));
+//        Files.createDirectories(Paths.get(UPLOAD_DIR));
 
         Product product = new Product();
         product.setName(productDto.getName());
@@ -64,21 +66,21 @@ public class ProductServiceImpl implements ProductService {
         Product savedProduct = productRepository.save(product);
 
         if (productDto.getSizes() != null) {
-            productDto.getSizes().forEach(size -> {
+            for (ProductSize sizeDto : productDto.getSizes()) {
                 ProductSize productSize = new ProductSize();
-                productSize.setSize(size.getSize());
+                productSize.setSize(sizeDto.getSize());
                 productSize.setProduct(savedProduct);
                 productSizeRepository.save(productSize);
-            });
+            }
         }
 
         if (productDto.getWeights() != null) {
-            productDto.getWeights().forEach(weight -> {
+            for (ProductWeight weightDto : productDto.getWeights()) {
                 ProductWeight productWeight = new ProductWeight();
-                productWeight.setWeight(weight.getWeight());
+                productWeight.setWeight(weightDto.getWeight());
                 productWeight.setProduct(savedProduct);
                 productWeightRepository.save(productWeight);
-            });
+            }
         }
 
         return savedProduct;

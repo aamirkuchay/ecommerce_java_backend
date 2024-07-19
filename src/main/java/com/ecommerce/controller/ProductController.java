@@ -19,8 +19,10 @@ public class ProductController {
 private ProductService productService;
 
     @PostMapping
-    public ResponseEntity<Product> createProduct(@RequestBody ProductDto productDto,  @RequestParam("photo") MultipartFile photo) throws IOException {
-        productDto.setPhoto(photo);
+    public ResponseEntity<Product> createProduct(@RequestBody ProductDto productDto
+                                                ) throws IOException {
+//        productDto.setPhoto(photo);
+//        @RequestParam("photo") MultipartFile photo
         Product savedProduct = productService.saveProduct(productDto);
         return new ResponseEntity<>(savedProduct, HttpStatus.CREATED);
     }

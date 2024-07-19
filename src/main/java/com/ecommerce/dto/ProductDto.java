@@ -1,10 +1,8 @@
 package com.ecommerce.dto;
 
-import com.ecommerce.entity.Category;
 import com.ecommerce.entity.ProductSize;
 import com.ecommerce.entity.ProductWeight;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
