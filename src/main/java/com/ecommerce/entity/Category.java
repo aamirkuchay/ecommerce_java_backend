@@ -20,8 +20,7 @@ public class Category {
     @NotNull
     private String name;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "category")
+    @ManyToMany(mappedBy = "categories")
     private List<Product> products;
 
 }

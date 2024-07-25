@@ -2,11 +2,13 @@ package com.ecommerce.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import java.util.ArrayList;
+import lombok.*;
+
 import java.util.List;
 
 
 @Entity
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,94 +23,32 @@ public class Product {
     @NotNull
     private Double price;
 
-    @NotNull
-    private Double weight;
 
     private String photo;
 
-    @ManyToOne
-    @JoinColumn(name = "category_id", nullable = false)
-    private Category category;
+    @Enumerated(EnumType.STRING)
+    private ProductStatus status;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ProductSize> sizes = new ArrayList<>();
+    @ManyToMany
+    @JoinTable(
+            name = "product_category",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id")
+    )
+    private List<Category> categories;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ProductWeight> weights = new ArrayList<>();
+    @ElementCollection
+    @CollectionTable(name = "product_size", joinColumns = @JoinColumn(name = "product_id"))
+    @Column(name = "size")
+    private List<String> sizes;
+
+    @ElementCollection
+    @CollectionTable(name = "product_weight", joinColumns = @JoinColumn(name = "product_id"))
+    @Column(name = "weight")
+    private List<Double> weights;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<ProductImage> images;
 
 
-
-    public Product(){}
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
-    public Double getWeight() {
-        return weight;
-    }
-
-    public void setWeight(Double weight) {
-        this.weight = weight;
-    }
-
-    public String getPhoto() {
-        return photo;
-    }
-
-    public void setPhoto(String photo) {
-        this.photo = photo;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
-
-    public List<ProductSize> getSizes() {
-        return sizes;
-    }
-
-    public void setSizes(List<ProductSize> sizes) {
-        this.sizes = sizes;
-    }
-
-    public List<ProductWeight> getWeights() {
-        return weights;
-    }
-
-    public void setWeights(List<ProductWeight> weights) {
-        this.weights = weights;
-    }
 }
