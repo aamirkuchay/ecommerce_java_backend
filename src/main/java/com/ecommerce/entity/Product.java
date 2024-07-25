@@ -23,9 +23,6 @@ public class Product {
     @NotNull
     private Double price;
 
-
-    private String photo;
-
     @Enumerated(EnumType.STRING)
     private ProductStatus status;
 
