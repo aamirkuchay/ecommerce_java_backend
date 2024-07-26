@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductImage {
+public class ProductSize {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,10 +22,11 @@ public class ProductImage {
     private Product product;
 
     @Column(nullable = false)
-    private String url;
+    private String size;
 
+    @Column(nullable = false)
+    private Integer quantity;
 
-    public ProductImage(Object o, Product product, String fileName) {
+    public ProductSize(Object o, Product product, String size, Integer quantity) {
     }
 }
-

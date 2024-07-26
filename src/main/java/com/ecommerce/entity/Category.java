@@ -3,14 +3,11 @@ package com.ecommerce.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+
 
 import java.util.List;
 
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+//@Getter @Setter @NoArgsConstructor @AllArgsConstructor
 @Entity
 public class Category {
     @Id
@@ -23,4 +20,30 @@ public class Category {
     @ManyToMany(mappedBy = "categories")
     private List<Product> products;
 
+
+    public Category(){}
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
+    }
 }
