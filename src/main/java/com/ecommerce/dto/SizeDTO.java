@@ -1,25 +1,14 @@
 package com.ecommerce.dto;
 
 
+import lombok.Data;
 
+import java.util.List;
 
+@Data
 public class SizeDTO {
     private String size;
     private Integer quantity;
+    private List<ProductColorDto> colors;
 
-    public String getSize() {
-        return size;
-    }
-
-    public void setSize(String size) {
-        this.size = size;
-    }
-
-    public Integer getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
-    }
 }

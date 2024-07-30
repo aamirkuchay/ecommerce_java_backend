@@ -46,8 +46,23 @@ public class ProductServiceImpl implements ProductService {
         List<Category> categories = categoryRepository.findAllById(productRequest.getCategoryIds());
         product.setCategories(categories);
 
+//        List<ProductSize> sizes = productRequest.getSizes().stream()
+//                .map(sizeDTO -> new ProductSize(null, product, sizeDTO.getSize(), sizeDTO.getQuantity()))
+//                .collect(Collectors.toList());
+//        product.setSizes(sizes);
+
+
         List<ProductSize> sizes = productRequest.getSizes().stream()
-                .map(sizeDTO -> new ProductSize(null, product, sizeDTO.getSize(), sizeDTO.getQuantity()))
+                .map(sizeDTO -> {
+                    ProductSize productSize = new ProductSize( product, sizeDTO.getSize(), sizeDTO.getQuantity());
+
+                    List<ProductColor> colors = sizeDTO.getColors().stream()
+                            .map(colorDTO -> new ProductColor(null, colorDTO.getColor(), colorDTO.getQuantity(), productSize))
+                            .collect(Collectors.toList());
+                    productSize.setColors(colors);
+
+                    return productSize;
+                })
                 .collect(Collectors.toList());
         product.setSizes(sizes);
 
