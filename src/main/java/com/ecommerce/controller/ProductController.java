@@ -20,8 +20,8 @@ public class ProductController {
 private ProductService productService;
 
     @PostMapping
-    public ResponseEntity<Product> createProduct(@RequestPart("product") ProductDto productRequest,
-                                                 @RequestPart("images") List<MultipartFile> images) {
+    public ResponseEntity<Product> createProduct(@RequestBody ProductDto productRequest,
+                                                 @RequestParam("images") List<MultipartFile> images) {
         productRequest.setImages(images);
         Product savedProduct = productService.saveProduct(productRequest);
         return new ResponseEntity<>(savedProduct, HttpStatus.CREATED);
