@@ -14,10 +14,10 @@ public class ProductColor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
+
     private String color;
 
-    @NotNull
+ 
     @Min(value = 0)
     private Integer quantity;
 
