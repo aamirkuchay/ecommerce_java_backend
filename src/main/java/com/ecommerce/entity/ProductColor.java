@@ -17,7 +17,7 @@ public class ProductColor {
 
     private String color;
 
- 
+
     @Min(value = 0)
     private Integer quantity;
 
@@ -25,4 +25,10 @@ public class ProductColor {
     @ManyToOne
     @JoinColumn(name = "product_size_id", nullable = false)
     private ProductSize productSize;
+
+    public ProductColor(ProductSize productSize, String color, Integer quantity) {
+        this.productSize = productSize;
+        this.color = color;
+        this.quantity = quantity;
+    }
 }

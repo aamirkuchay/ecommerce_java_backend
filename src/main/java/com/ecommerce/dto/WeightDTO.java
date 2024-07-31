@@ -1,30 +1,21 @@
 package com.ecommerce.dto;
 
+import com.ecommerce.entity.ProductWeight;
 import lombok.Data;
 
 
+@Data
 public class WeightDTO {
     private Double weight;
     private Integer quantity;
 
-    public WeightDTO(Double weight, Integer quantity) {
-        this.weight = weight;
-        this.quantity = quantity;
+
+
+    public static WeightDTO fromProductWeight(ProductWeight productWeight) {
+        WeightDTO dto = new WeightDTO();
+        dto.setWeight(productWeight.getWeight());
+        dto.setQuantity(productWeight.getQuantity());
+        return dto;
     }
 
-    public Double getWeight() {
-        return weight;
-    }
-
-    public void setWeight(Double weight) {
-        this.weight = weight;
-    }
-
-    public Integer getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
-    }
 }

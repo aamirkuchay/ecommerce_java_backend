@@ -1,22 +1,25 @@
 package com.ecommerce.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
 public class ProductImage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JsonManagedReference
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
@@ -24,8 +27,9 @@ public class ProductImage {
     @Column(nullable = false)
     private String url;
 
-
-    public ProductImage(Object o, Product product, String fileName) {
+    public ProductImage(Product product, String fileName) {
+        this.product = product;
+        this.url = fileName;
     }
 }
 

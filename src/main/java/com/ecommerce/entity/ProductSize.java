@@ -1,6 +1,7 @@
 package com.ecommerce.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,7 +28,7 @@ public class ProductSize {
     @Column(nullable = false)
     private Integer quantity;
 
-    @JsonIgnore
+    @JsonManagedReference
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
@@ -36,5 +37,8 @@ public class ProductSize {
     private List<ProductColor> colors = new ArrayList<>();
 
     public ProductSize(Product product, String size, Integer quantity) {
+        this.product = product;
+        this.size = size;
+        this.quantity = quantity;
     }
 }

@@ -1,6 +1,7 @@
 package com.ecommerce.controller;
 
 import com.ecommerce.dto.ProductDto;
+import com.ecommerce.dto.ProductResponseDto;
 import com.ecommerce.entity.Product;
 import com.ecommerce.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,17 +14,18 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/products")
+@RequestMapping("/api/products")
 public class ProductController {
 
 @Autowired
 private ProductService productService;
 
-    @PostMapping
-    public ResponseEntity<Product> createProduct(@RequestBody ProductDto productRequest,
+    @PostMapping("/save-product")
+    public ResponseEntity<ProductResponseDto> createProduct(@ModelAttribute ProductDto productRequest,
                                                  @RequestParam("images") List<MultipartFile> images) {
         productRequest.setImages(images);
         Product savedProduct = productService.saveProduct(productRequest);
-        return new ResponseEntity<>(savedProduct, HttpStatus.CREATED);
+        ProductResponseDto responseDto = ProductResponseDto.fromProduct(savedProduct);
+        return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
 }

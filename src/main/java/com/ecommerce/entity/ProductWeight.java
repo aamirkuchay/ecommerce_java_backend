@@ -1,5 +1,6 @@
 package com.ecommerce.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,6 +15,7 @@ public class ProductWeight {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JsonManagedReference
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
@@ -24,6 +26,11 @@ public class ProductWeight {
     @Column(nullable = false)
     private Integer quantity;
 
-    public ProductWeight(Object o, Product product, Double weight, Integer quantity) {
+
+    public ProductWeight(Product product, Double weight, Integer quantity) {
+        this.product = product;
+        this.weight = weight;
+        this.quantity = quantity;
     }
+
 }
