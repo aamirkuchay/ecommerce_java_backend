@@ -2,47 +2,31 @@ package com.ecommerce.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 
 import java.util.List;
 
-
+@Setter @Getter @NoArgsConstructor @AllArgsConstructor
 @Entity
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @NotNull
+    @Column(nullable = false)
     private String name;
 
-    @ManyToMany(mappedBy = "categories")
-    private List<Product> products;
+    @Column(nullable = false, unique = true)
+    private String slug;
 
+    @ManyToOne
+    @JoinColumn(name = "parent_id")
+    private Category parent;
 
-    public Category(){}
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public List<Product> getProducts() {
-        return products;
-    }
-
-    public void setProducts(List<Product> products) {
-        this.products = products;
-    }
+    @OneToMany(mappedBy = "parent")
+    private List<Category> subCategories;
 }

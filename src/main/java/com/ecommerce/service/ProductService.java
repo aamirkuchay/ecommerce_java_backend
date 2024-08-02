@@ -1,11 +1,14 @@
 package com.ecommerce.service;
 
+
 import com.ecommerce.dto.ProductDto;
-import com.ecommerce.entity.Product;
+import com.ecommerce.dto.ProductResponseDto;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 public interface ProductService {
-    Product saveProduct(ProductDto productRequest);
-//    Product saveProduct(Product product, List<MultipartFile> images) throws IOException;
 
-//   Product saveProduct(ProductDto productDto) throws IOException;
+
+    ProductResponseDto createProduct(ProductDto productCreateDto, List<MultipartFile> images);
 }

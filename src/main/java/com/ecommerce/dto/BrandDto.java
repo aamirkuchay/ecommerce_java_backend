@@ -3,7 +3,8 @@ package com.ecommerce.dto;
 import lombok.Data;
 
 @Data
-public class ProductColorDto {
+public class BrandDto {
+
     private Long id;
     private String name;
 }

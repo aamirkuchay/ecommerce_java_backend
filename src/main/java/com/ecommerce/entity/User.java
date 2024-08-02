@@ -5,6 +5,10 @@ import java.util.Collection;
 import java.util.List;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -17,6 +21,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+@Getter @Setter @AllArgsConstructor
 @Entity
 public class User implements UserDetails {
 	@Id
@@ -54,14 +59,17 @@ public class User implements UserDetails {
 	@Column(name = "username")
 	private String username;
 
-	@OneToMany(mappedBy = "user")
-	private List<Order> orders;
-
 	@OneToOne(mappedBy = "user")
 	private Cart cart;
 
 	@UpdateTimestamp
 	private LocalDateTime updated;
+
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	private List<Address> addresses;
+
+	@OneToMany(mappedBy = "user")
+	private List<Order> orders;
 
 	public User() {
 	}
@@ -96,83 +104,4 @@ public class User implements UserDetails {
 		return true;
 	}
 
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public String getPhoneNumber() {
-		return phoneNumber;
-	}
-
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
-	}
-
-	public String getAddress() {
-		return address;
-	}
-
-	public void setAddress(String address) {
-		this.address = address;
-	}
-
-	public Role getRole() {
-		return role;
-	}
-
-	public void setRole(Role role) {
-		this.role = role;
-	}
-
-	public LocalDateTime getUpdated() {
-		return updated;
-	}
-
-	public void setUpdated(LocalDateTime updated) {
-		this.updated = updated;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public List<Order> getOrders() {
-		return orders;
-	}
-
-	public void setOrders(List<Order> orders) {
-		this.orders = orders;
-	}
-
-	public Cart getCart() {
-		return cart;
-	}
-
-	public void setCart(Cart cart) {
-		this.cart = cart;
-	}
 }
