@@ -8,5 +8,7 @@ public class SKUAttributeDto {
     private String value;
 
     public SKUAttributeDto(String name, String value) {
+        this.name= name;
+        this.value = value;
     }
 }
