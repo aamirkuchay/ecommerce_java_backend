@@ -4,6 +4,7 @@ import com.ecommerce.entity.Category;
 import com.ecommerce.exception.ResourceNotFoundException;
 import com.ecommerce.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -54,8 +55,8 @@ public class CategoryController {
     }
 
     @GetMapping
-    public List<Category> getAllCategories() {
-        return categoryService.getAllCategories();
+    public Page<Category> getAllCategories(@RequestParam(defaultValue = "0") int page) {
+        return categoryService.getAllCategories(page);
     }
 }
 

@@ -2,10 +2,14 @@ package com.ecommerce.service.impl;
 
 
 import com.ecommerce.entity.Category;
+import com.ecommerce.entity.Size;
 import com.ecommerce.exception.ResourceNotFoundException;
 import com.ecommerce.repository.CategoryRepository;
 import com.ecommerce.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,8 +22,10 @@ public class CategoryServiceImpl implements CategoryService {
     private CategoryRepository categoryRepository;
 
 
-    public List<Category> getAllCategories() {
-        return categoryRepository.findAll();
+    @Override
+    public Page<Category> getAllCategories(int page) {
+        Pageable pageable = PageRequest.of(page - 1, 10);
+        return categoryRepository.findAll(pageable);
     }
 
     public Optional<Category> getCategoryById(Long id) {

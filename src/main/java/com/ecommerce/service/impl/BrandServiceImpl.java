@@ -6,6 +6,9 @@ import com.ecommerce.exception.ResourceNotFoundException;
 import com.ecommerce.repository.BrandRepository;
 import com.ecommerce.service.BrandService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -45,7 +48,8 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public List<Brand> getAllBrands() {
-        return brandRepository.findAll();
+    public Page<Brand> getAllBrands(int page) {
+        Pageable pageable = PageRequest.of(page - 1, 10);
+        return brandRepository.findAll(pageable);
     }
 }

@@ -1,11 +1,15 @@
 package com.ecommerce.service.impl;
 
 
+import com.ecommerce.entity.Size;
 import com.ecommerce.entity.Weight;
 import com.ecommerce.exception.ResourceNotFoundException;
 import com.ecommerce.repository.WeightRepository;
 import com.ecommerce.service.WeightService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -43,8 +47,10 @@ public class WeightServiceImpl implements WeightService {
         weightRepository.delete(weight);
     }
 
+
     @Override
-    public List<Weight> getAllWeights() {
-        return weightRepository.findAll();
+    public Page<Weight> getAllWeights(int page) {
+        Pageable pageable = PageRequest.of(page - 1, 10);
+        return weightRepository.findAll(pageable);
     }
 }

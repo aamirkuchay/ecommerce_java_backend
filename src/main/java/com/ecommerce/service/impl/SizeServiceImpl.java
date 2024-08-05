@@ -1,11 +1,15 @@
 package com.ecommerce.service.impl;
 
 
+import com.ecommerce.entity.Brand;
 import com.ecommerce.entity.Size;
 import com.ecommerce.exception.ResourceNotFoundException;
 import com.ecommerce.repository.SizeRepository;
 import com.ecommerce.service.SizeService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -44,7 +48,8 @@ public class SizeServiceImpl implements SizeService {
     }
 
     @Override
-    public List<Size> getAllSizes() {
-        return sizeRepository.findAll();
+    public Page<Size> getAllSizes(int page) {
+        Pageable pageable = PageRequest.of(page - 1, 10);
+        return sizeRepository.findAll(pageable);
     }
 }

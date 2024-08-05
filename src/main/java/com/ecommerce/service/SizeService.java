@@ -1,6 +1,7 @@
 package com.ecommerce.service;
 
 import com.ecommerce.entity.Size;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,5 +15,5 @@ public interface SizeService {
 
     void deleteSize(Long id);
 
-    List<Size> getAllSizes();
+    Page<Size> getAllSizes(int page);
 }

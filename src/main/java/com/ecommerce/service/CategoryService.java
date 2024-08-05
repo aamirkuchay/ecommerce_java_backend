@@ -1,6 +1,7 @@
 package com.ecommerce.service;
 
 import com.ecommerce.entity.Category;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,5 +15,5 @@ public interface CategoryService  {
 
     void deleteCategory(Long id);
 
-    List<Category> getAllCategories();
+    Page<Category> getAllCategories(int page);
 }

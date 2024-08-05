@@ -2,10 +2,14 @@ package com.ecommerce.service.impl;
 
 
 import com.ecommerce.entity.ProductColor;
+import com.ecommerce.entity.Weight;
 import com.ecommerce.exception.ResourceNotFoundException;
 import com.ecommerce.repository.ProductColorRepository;
 import com.ecommerce.service.ColorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -45,7 +49,8 @@ public class ColorServiceImpl implements ColorService {
     }
 
     @Override
-    public List<ProductColor> getAllColors() {
-        return productColorRepository.findAll();
+    public Page<ProductColor> getAllColors(int page) {
+        Pageable pageable = PageRequest.of(page - 1, 10);
+        return productColorRepository.findAll(pageable);
     }
 }

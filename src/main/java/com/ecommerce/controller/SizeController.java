@@ -6,6 +6,7 @@ import com.ecommerce.exception.ResourceNotFoundException;
 import com.ecommerce.service.ColorService;
 import com.ecommerce.service.SizeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -57,8 +58,8 @@ public class SizeController {
     }
 
     @GetMapping
-    public List<Size> getAllSizes() {
-        return sizeService.getAllSizes();
+    public Page<Size> getAllSizes(@RequestParam(defaultValue = "0") int page) {
+        return sizeService.getAllSizes(page);
     }
 
 }

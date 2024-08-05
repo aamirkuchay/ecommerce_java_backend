@@ -5,6 +5,7 @@ import com.ecommerce.entity.ProductColor;
 import com.ecommerce.exception.ResourceNotFoundException;
 import com.ecommerce.service.ColorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -55,8 +56,8 @@ public class ColorController {
     }
 
     @GetMapping
-    public List<ProductColor> getAllCategories() {
-        return colorService.getAllColors();
+    public Page<ProductColor> getAllColors(@RequestParam(defaultValue = "0") int page) {
+        return colorService.getAllColors(page);
     }
 
 

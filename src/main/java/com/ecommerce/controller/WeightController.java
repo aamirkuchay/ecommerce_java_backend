@@ -5,6 +5,7 @@ import com.ecommerce.entity.Weight;
 import com.ecommerce.exception.ResourceNotFoundException;
 import com.ecommerce.service.WeightService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -55,8 +56,8 @@ public class WeightController {
     }
 
     @GetMapping
-    public List<Weight> getAllWeights() {
-        return weightService.getAllWeights();
+    public Page<Weight> getAllWeights(@RequestParam(defaultValue = "0") int page) {
+        return weightService.getAllWeights( page);
     }
 
 
