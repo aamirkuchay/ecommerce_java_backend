@@ -45,5 +45,5 @@ public class ProductSKU {
 
 
     @OneToMany(mappedBy = "sku", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<SKUAttribute> attributes;
+    private List<SKUAttribute> skuAttributes;
 }

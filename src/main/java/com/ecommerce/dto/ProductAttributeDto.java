@@ -8,5 +8,9 @@ public class ProductAttributeDto {
     private String value;
 
     public ProductAttributeDto(String name, String value) {
+        this.name = name;
+        this.value=value;
     }
+
+
 }

@@ -101,9 +101,26 @@ public class ProductServiceImpl implements ProductService {
         Product savedProduct = productRepository.save(product);
 
         // Save attributes
+//        List<ProductAttribute> attributes = productDTO.getAttributes().stream()
+//                .filter(attrDTO -> attrDTO.getName() != null && !attrDTO.getName().trim().isEmpty() &&
+//                        attrDTO.getValue() != null && !attrDTO.getValue().trim().isEmpty())
+//                .map(attrDTO -> {
+//                    ProductAttribute attribute = new ProductAttribute();
+//                    attribute.setProduct(savedProduct);
+//                    attribute.setName(attrDTO.getName());
+//                    attribute.setValue(attrDTO.getValue());
+//                    return attribute;
+//                })
+//                .collect(Collectors.toList());
         List<ProductAttribute> attributes = productDTO.getAttributes().stream()
-                .filter(attrDTO -> attrDTO.getName() != null && !attrDTO.getName().trim().isEmpty() &&
-                        attrDTO.getValue() != null && !attrDTO.getValue().trim().isEmpty())
+                .filter(attrDTO -> {
+                    boolean isValid = attrDTO.getName() != null && !attrDTO.getName().trim().isEmpty() &&
+                            attrDTO.getValue() != null && !attrDTO.getValue().trim().isEmpty();
+                    if (!isValid) {
+                        System.err.println("Invalid attribute: " + attrDTO);
+                    }
+                    return isValid;
+                })
                 .map(attrDTO -> {
                     ProductAttribute attribute = new ProductAttribute();
                     attribute.setProduct(savedProduct);
@@ -112,8 +129,11 @@ public class ProductServiceImpl implements ProductService {
                     return attribute;
                 })
                 .collect(Collectors.toList());
-        productAttributeRepository.saveAll(attributes);
-        savedProduct.setAttributes(attributes);
+
+        if (!attributes.isEmpty()) {
+            productAttributeRepository.saveAll(attributes);
+            savedProduct.setAttributes(attributes);
+        }
 
         // Save images
         List<ProductImage> productImages = images.stream()
@@ -180,7 +200,7 @@ public class ProductServiceImpl implements ProductService {
                                 return attribute;
                             })
                             .collect(Collectors.toList());
-                    sku.setAttributes(attributesList);
+                    sku.setSkuAttributes(attributesList);
                     return sku;
                 })
                 .collect(Collectors.toList());
@@ -189,7 +209,7 @@ public class ProductServiceImpl implements ProductService {
         savedSkus.forEach(sku -> {
             skuSizeRepository.saveAll(sku.getSizes());
             skuWeightRepository.saveAll(sku.getWeights());
-            skuAttributeRepository.saveAll(sku.getAttributes());
+            skuAttributeRepository.saveAll(sku.getSkuAttributes());
         });
         savedProduct.setSkus(savedSkus);
         // Save and build response DTO
@@ -240,7 +260,7 @@ public class ProductServiceImpl implements ProductService {
                             .map(weight -> new SKUWeightDTO(weight.getWeight().getId(), weight.getQuantity()))
                             .collect(Collectors.toList()));
 
-                    skuDTO.setAttributes(sku.getAttributes().stream()
+                    skuDTO.setAttributes(sku.getSkuAttributes().stream()
                             .map(attr -> new SKUAttributeDto(attr.getName(), attr.getValue()))
                             .collect(Collectors.toList()));
 
