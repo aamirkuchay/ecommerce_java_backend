@@ -88,6 +88,11 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductSKU> skus = new ArrayList<>();
 
+
+    public void setFeatured(boolean featured) {
+        isFeatured = featured;
+    }
+
 }
 
 

@@ -74,10 +74,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductResponseDto createProduct(ProductDto productDTO, List<MultipartFile> images) {
-        System.err.println("Attributes:  " + productDTO.getAttributes());
-        System.err.println("Images:       " + productDTO.getImages());
-        System.err.println("SKUs:          " + productDTO.getSkus());
-        // Create Product entity
+
         Product product = new Product();
         product.setName(productDTO.getName());
         product.setSlug(generateSlug(productDTO.getSlug()));
@@ -86,7 +83,7 @@ public class ProductServiceImpl implements ProductService {
         product.setStatus(productDTO.getStatus());
         product.setMetaTitle(productDTO.getMetaTitle());
         product.setMetaDescription(productDTO.getMetaDescription());
-//        product.setIsFeatured(productDTO.isFeatured());
+        product.setFeatured(productDTO.isFeatured());
 
         // Set categories
         Set<Category> categories = productDTO.getCategories().stream()
@@ -125,7 +122,7 @@ public class ProductServiceImpl implements ProductService {
                     ProductImage productImage = new ProductImage();
                     productImage.setProduct(savedProduct);
                     productImage.setUrl(imageUrl);
-//                    productImage.setIsPrimary(false);
+                    productImage.setPrimary(false);
                     return productImage;
                 })
                 .collect(Collectors.toList());
@@ -213,7 +210,7 @@ public class ProductServiceImpl implements ProductService {
         dto.setStatus(product.getStatus());
         dto.setMetaTitle(product.getMetaTitle());
         dto.setMetaDescription(product.getMetaDescription());
-//        dto.setIsFeatured(product.isFeatured());
+        dto.setFeatured(product.isFeatured());
         dto.setCategories(product.getCategories().stream().map(Category::getId).collect(Collectors.toList()));
         dto.setBrandId(product.getBrand().getId());
 

@@ -29,7 +29,6 @@ public class ProductController {
     public ResponseEntity<ProductResponseDto> createProduct(
             @RequestPart("product")  ProductDto productCreateDto,
             @RequestPart("images") List<MultipartFile> images) {
-        System.out.println("ppppppppppppp" + productCreateDto);
         ProductResponseDto createdProduct = productService.createProduct(productCreateDto, images);
         return new ResponseEntity<>(createdProduct, HttpStatus.CREATED);
     }

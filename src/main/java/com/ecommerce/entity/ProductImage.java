@@ -27,5 +27,14 @@ public class ProductImage {
 
 //    @Column(nullable = false)
     private boolean isPrimary;
+
+
+    public boolean isPrimary() {
+        return isPrimary;
+    }
+
+    public void setPrimary(boolean primary) {
+        isPrimary = primary;
+    }
 }
 
