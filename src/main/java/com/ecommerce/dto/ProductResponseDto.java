@@ -15,14 +15,18 @@ import java.util.stream.Collectors;
 public class ProductResponseDto {
     private Long id;
     private String name;
+    private String slug;
     private String description;
     private BigDecimal basePrice;
     private ProductStatus status;
-    private String slug;
-    private List<CategoryDto> categories;
-    private BrandDto brand;
-    private List<ProductSkuResponseDto> skus;
+    private String metaTitle;
+    private String metaDescription;
+    private boolean isFeatured;
+    private List<Long> categories;
+    private Long brandId;
+    private List<ProductAttributeDto> attributes;
     private List<ProductImageDto> images;
+    private List<ProductSKUDto> skus;
 
 
 

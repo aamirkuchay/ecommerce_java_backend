@@ -23,17 +23,26 @@ public class ProductSKU {
     @Column(nullable = false, unique = true)
     private String sku;
 
-    @Column(nullable = false)
+//    @Column(nullable = false)
     private BigDecimal price;
 
-    @Column(nullable = false)
-    private Integer quantity;
+//    @Column(nullable = false)
+//    private Integer quantity;
 
-    @Column(nullable = false)
-    private Double weight;
+//    @Column(nullable = false)
+//    private Double weight;
+
+
     @ManyToOne
     @JoinColumn(name = "color_id")
     private ProductColor color;
+
+    @OneToMany(mappedBy = "sku", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<SKUSize> sizes;
+
+    @OneToMany(mappedBy = "sku", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<SKUWeight> weights;
+
 
     @OneToMany(mappedBy = "sku", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SKUAttribute> attributes;

@@ -12,5 +12,7 @@ public class ProductSKUDto {
     private Integer quantity;
     private Double weight;
     private Long colorId;
+    private List<SKUSizeDTO> sizes;
+    private List<SKUWeightDTO> weights;
     private List<SKUAttributeDto> attributes;
 }

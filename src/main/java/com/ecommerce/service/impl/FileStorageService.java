@@ -1,7 +1,6 @@
-package com.ecommerce.service;
+package com.ecommerce.service.impl;
 
 import com.ecommerce.exception.FileStorageException;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,9 +14,8 @@ import java.nio.file.StandardCopyOption;
 @Service
 public class FileStorageService {
 
-//    @Value("${app.upload.dir:${user.home}}")
-//    private String uploadDir;
 private static final String IMAGE_DIRECTORY = "C:\\usr\\ecommerce\\";
+    private static final String IMAGE_BASE_URL = "http://localhost:8085/images/";
 
     public String storeFile(MultipartFile file, String productSlug) {
         try {

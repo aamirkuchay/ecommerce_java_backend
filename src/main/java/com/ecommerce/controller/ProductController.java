@@ -25,10 +25,11 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(consumes = "multipart/form-data")
     public ResponseEntity<ProductResponseDto> createProduct(
-            @RequestPart("product") @Valid ProductDto productCreateDto,
+            @RequestPart("product")  ProductDto productCreateDto,
             @RequestPart("images") List<MultipartFile> images) {
+        System.out.println("ppppppppppppp" + productCreateDto);
         ProductResponseDto createdProduct = productService.createProduct(productCreateDto, images);
         return new ResponseEntity<>(createdProduct, HttpStatus.CREATED);
     }

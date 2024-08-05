@@ -1,14 +1,11 @@
 package com.ecommerce.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter @Setter @AllArgsConstructor @NoArgsConstructor
-@Entity
-public class SKUAttribute {
+@Entity @Getter @Setter
+public class SKUSize {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -17,9 +14,10 @@ public class SKUAttribute {
     @JoinColumn(name = "sku_id", nullable = false)
     private ProductSKU sku;
 
-//    @Column(nullable = false)
-    private String name;
+    @ManyToOne
+    @JoinColumn(name = "size_id", nullable = false)
+    private Size size;
 
-//    @Column(nullable = false)
-    private String value;
+    @Column(nullable = false)
+    private Integer quantity;
 }

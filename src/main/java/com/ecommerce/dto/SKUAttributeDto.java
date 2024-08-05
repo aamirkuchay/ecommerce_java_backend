@@ -6,4 +6,7 @@ import lombok.Data;
 public class SKUAttributeDto {
     private String name;
     private String value;
+
+    public SKUAttributeDto(String name, String value) {
+    }
 }

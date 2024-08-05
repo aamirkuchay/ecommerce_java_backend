@@ -8,19 +8,19 @@ import lombok.Setter;
 
 @Getter @Setter @AllArgsConstructor @NoArgsConstructor
 @Entity
-public class ProductAttribute {
+@Table(name = "sku_weights")
+public class SKUWeight {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "product_id", nullable = false)
-    private Product product;
+    @JoinColumn(name = "sku_id", nullable = false)
+    private ProductSKU sku;
 
-//    @Column(nullable = false)
-    private String name;
+    @ManyToOne
+    @JoinColumn(name = "weight_id", nullable = false)
+    private Weight weight;
 
-//    @Column(nullable = false)
-    private String value;
-}
-
+    @Column(nullable = false)
+    private Integer quantity;}

@@ -6,4 +6,7 @@ import lombok.Data;
 public class ProductImageDto {
     private String url;
     private boolean isPrimary;
+
+    public ProductImageDto(String url, boolean primary) {
+    }
 }
