@@ -101,17 +101,6 @@ public class ProductServiceImpl implements ProductService {
         Product savedProduct = productRepository.save(product);
 
         // Save attributes
-//        List<ProductAttribute> attributes = productDTO.getAttributes().stream()
-//                .filter(attrDTO -> attrDTO.getName() != null && !attrDTO.getName().trim().isEmpty() &&
-//                        attrDTO.getValue() != null && !attrDTO.getValue().trim().isEmpty())
-//                .map(attrDTO -> {
-//                    ProductAttribute attribute = new ProductAttribute();
-//                    attribute.setProduct(savedProduct);
-//                    attribute.setName(attrDTO.getName());
-//                    attribute.setValue(attrDTO.getValue());
-//                    return attribute;
-//                })
-//                .collect(Collectors.toList());
         List<ProductAttribute> attributes = productDTO.getAttributes().stream()
                 .filter(attrDTO -> {
                     boolean isValid = attrDTO.getName() != null && !attrDTO.getName().trim().isEmpty() &&
