@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
+@AllArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
@@ -37,36 +38,6 @@ public class ProductServiceImpl implements ProductService {
     private final SKUSizeRepository skuSizeRepository;
     private final SKUWeightRepository skuWeightRepository;
     private final SKUAttributeRepository skuAttributeRepository;
-
-    @Autowired
-    public ProductServiceImpl(ProductRepository productRepository,
-                              CategoryRepository categoryRepository,
-                              BrandRepository brandRepository,
-                              ProductColorRepository productColorRepository,
-                              ProductAttributeRepository productAttributeRepository,
-                              ProductImageRepository productImageRepository,
-                              SizeRepository sizeRepository,
-                              WeightRepository weightRepository,
-                              ProductSKURepository productSKURepository,
-                              SKUWeightRepository skuWeightRepository,
-                              SKUSizeRepository skuSizeRepository,
-                              SKUAttributeRepository skuAttributeRepository,
-                              FileStorageService fileStorageService) {
-        this.productRepository = productRepository;
-        this.categoryRepository = categoryRepository;
-        this.brandRepository = brandRepository;
-        this.productColorRepository = productColorRepository;
-        this.productAttributeRepository = productAttributeRepository;
-        this.productImageRepository = productImageRepository;
-        this.sizeRepository = sizeRepository;
-        this.weightRepository = weightRepository;
-        this.productSKURepository = productSKURepository;
-        this.skuWeightRepository = skuWeightRepository;
-        this.skuSizeRepository = skuSizeRepository;
-        this.skuAttributeRepository = skuAttributeRepository;
-        this.fileStorageService = fileStorageService;
-    }
-
 
     private static final String IMAGE_DIRECTORY = "C:\\usr\\ecommerce\\";
 
