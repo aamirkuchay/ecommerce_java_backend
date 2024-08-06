@@ -1,10 +1,10 @@
 package com.ecommerce.service.impl;
 
 
-import com.ecommerce.entity.Brand;
 import com.ecommerce.entity.Size;
 import com.ecommerce.exception.ResourceNotFoundException;
 import com.ecommerce.repository.SizeRepository;
+import com.ecommerce.service.BrandService;
 import com.ecommerce.service.SizeService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -12,7 +12,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @AllArgsConstructor

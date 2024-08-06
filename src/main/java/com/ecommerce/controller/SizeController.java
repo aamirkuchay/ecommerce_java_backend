@@ -1,16 +1,14 @@
 package com.ecommerce.controller;
 
-import com.ecommerce.entity.ProductColor;
 import com.ecommerce.entity.Size;
 import com.ecommerce.exception.ResourceNotFoundException;
-import com.ecommerce.service.ColorService;
+import com.ecommerce.service.BrandService;
 import com.ecommerce.service.SizeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
 
 @RestController

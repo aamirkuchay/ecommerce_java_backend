@@ -1,7 +1,5 @@
 package com.ecommerce.service.impl;
 
-
-import com.ecommerce.entity.Size;
 import com.ecommerce.entity.Weight;
 import com.ecommerce.exception.ResourceNotFoundException;
 import com.ecommerce.repository.WeightRepository;
@@ -11,8 +9,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -23,7 +19,7 @@ public class WeightServiceImpl implements WeightService {
     private WeightRepository weightRepository;
 
     @Override
-    public Weight saveSize(Weight weight) {
+    public Weight saveWeight(Weight weight) {
         return weightRepository.save(weight);
     }
 

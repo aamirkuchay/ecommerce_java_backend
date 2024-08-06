@@ -2,7 +2,6 @@ package com.ecommerce.service.impl;
 
 
 import com.ecommerce.entity.ProductColor;
-import com.ecommerce.entity.Weight;
 import com.ecommerce.exception.ResourceNotFoundException;
 import com.ecommerce.repository.ProductColorRepository;
 import com.ecommerce.service.ColorService;
@@ -12,7 +11,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service

@@ -1,12 +1,13 @@
 package com.ecommerce.service;
 
+
 import com.ecommerce.entity.ProductColor;
 import org.springframework.data.domain.Page;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface ColorService {
+
     ProductColor saveColor(ProductColor color);
 
     Optional<ProductColor> getColorById(Long id);
@@ -17,3 +18,4 @@ public interface ColorService {
 
     Page<ProductColor> getAllColors(int page);
 }
+

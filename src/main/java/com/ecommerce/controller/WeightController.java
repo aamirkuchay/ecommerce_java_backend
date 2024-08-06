@@ -23,7 +23,7 @@ public class WeightController {
 
     @PostMapping
     public Weight createWeight(@RequestBody Weight weight) {
-        return weightService.saveSize(weight);
+        return weightService.saveWeight(weight);
     }
 
 

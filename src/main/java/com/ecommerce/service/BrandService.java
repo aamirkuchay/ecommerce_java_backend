@@ -3,7 +3,6 @@ package com.ecommerce.service;
 import com.ecommerce.entity.Brand;
 import org.springframework.data.domain.Page;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface BrandService {
@@ -17,4 +16,5 @@ public interface BrandService {
 
 
     Page<Brand> getAllBrands(int page);
+
 }
