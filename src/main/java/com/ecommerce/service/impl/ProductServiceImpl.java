@@ -194,18 +194,16 @@ public class ProductServiceImpl implements ProductService {
         return productsPage.map(this::buildProductResponseDto);
     }
 
+    @Override
+    public void deleteProduct(Long id) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found with id " + id));
 
-
-
-
-
-
-
-
-
-
-
-
+        productImageRepository.deleteAll(product.getImages());
+        productSKURepository.deleteAll(product.getSkus());
+        productAttributeRepository.deleteAll(product.getAttributes());
+        productRepository.delete(product);
+    }
 
     private ProductResponseDto buildProductResponseDto(Product product) {
         ProductResponseDto dto = new ProductResponseDto();
