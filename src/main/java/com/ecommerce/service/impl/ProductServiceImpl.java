@@ -190,9 +190,21 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Page<ProductResponseDto> getAllProducts(Pageable pageable, String category, String brand, Double minPrice, Double maxPrice) {
-        Page<Product> productsPage = productRepository.findByCriteria(pageable, category, brand, minPrice, maxPrice);
+        Page<Product> productsPage = productRepository.findByCriteria(category, brand, minPrice, maxPrice, pageable);
         return productsPage.map(this::buildProductResponseDto);
     }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     private ProductResponseDto buildProductResponseDto(Product product) {

@@ -11,14 +11,16 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
-    @Query("SELECT p FROM Product p WHERE " +
-            "(:categoryName IS NULL OR :categoryName MEMBER OF p.categories) AND " +
-            "(:brand IS NULL OR p.brand.name = :brand) AND " +
-            "(:minPrice IS NULL OR p.basePrice >= :minPrice) AND " +
-            "(:maxPrice IS NULL OR p.basePrice <= :maxPrice)")
-    Page<Product> findByCriteria(Pageable pageable,
-                                 @Param("categoryName") String categoryName,
+    @Query("SELECT p FROM Product p " +
+            "JOIN p.categories c " +
+            "WHERE (:category IS NULL OR c.name = :category) " +
+            "AND (:brand IS NULL OR p.brand.name = :brand) " +
+            "AND (:minPrice IS NULL OR p.basePrice >= :minPrice) " +
+            "AND (:maxPrice IS NULL OR p.basePrice <= :maxPrice) " +
+            "AND p.isDeleted = false")
+    Page<Product> findByCriteria(@Param("category") String category,
                                  @Param("brand") String brand,
                                  @Param("minPrice") Double minPrice,
-                                 @Param("maxPrice") Double maxPrice);
+                                 @Param("maxPrice") Double maxPrice,
+                                 Pageable pageable);
     }
