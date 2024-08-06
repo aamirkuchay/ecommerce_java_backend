@@ -5,19 +5,12 @@ import com.ecommerce.dto.CategoryDTO;
 import com.ecommerce.dto.CategoryResponseDTO;
 import com.ecommerce.dto.ParentCategoryDTO;
 import com.ecommerce.entity.Category;
-import com.ecommerce.entity.Size;
 import com.ecommerce.exception.ResourceNotFoundException;
 import com.ecommerce.repository.CategoryRepository;
 import com.ecommerce.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,7 +28,7 @@ public class CategoryServiceImpl implements CategoryService {
 
         if (parentId != null) {
             Category parentCategory = categoryRepository.findById(parentId)
-                    .orElseThrow(() -> new ResourceNotFoundException("Parent category not found"));
+                    .orElseThrow(() -> new ResourceNotFoundException("Parent category not found" + parentId));
             category.setParent(parentCategory);
         }
 
@@ -46,7 +39,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public CategoryResponseDTO addSubcategory(Long parentId, CategoryDTO categoryDTO) {
         Category parentCategory = categoryRepository.findById(parentId)
-                .orElseThrow(() -> new ResourceNotFoundException("Parent category not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Parent category not found" + parentId));
 
         Category subcategory = new Category();
         subcategory.setName(categoryDTO.getName());
@@ -68,7 +61,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<CategoryResponseDTO> getAllSubcategories(Long categoryId) {
         Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found" + categoryId));
         return category.getChildren().stream()
                 .map(this::convertToResponseDTO)
                 .collect(Collectors.toList());

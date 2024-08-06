@@ -1,36 +1,21 @@
 package com.ecommerce.dto;
 
+import lombok.Data;
+
+import java.time.LocalDate;
+import java.util.Date;
+
+@Data
 public class ErrorResponse {
-	
-	private String errorMessage;
-	private String errorCode;
-	
-	
-	public String getErrorMessage() {
-		return errorMessage;
+	private Date timestamp;
+	private String message;
+	private String details;
+
+	public ErrorResponse(Date timestamp, String message, String details) {
+		this.timestamp = timestamp;
+		this.message = message;
+		this.details = details;
 	}
-	public void setErrorMessage(String errorMessage) {
-		this.errorMessage = errorMessage;
-	}
-	public String getErrorCode() {
-		return errorCode;
-	}
-	public void setErrorCode(String errorCode) {
-		this.errorCode = errorCode;
-	}
-	
-	public ErrorResponse() {
-	}
-	public ErrorResponse(String errorMessage, String errorCode) {
-		super();
-		this.errorMessage = errorMessage;
-		this.errorCode = errorCode;
-	}
-	
-	
-	
-	
-	
-	
+
 
 }
