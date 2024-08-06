@@ -15,7 +15,7 @@ import java.nio.file.StandardCopyOption;
 public class FileStorageService {
 
 private static final String IMAGE_DIRECTORY = "C:\\usr\\ecommerce\\";
-    private static final String IMAGE_BASE_URL = "http://localhost:8085/images/";
+    private static final String IMAGE_BASE_URL = "http://localhost:8085/api/images/";
 
     public String storeFile(MultipartFile file, String productSlug) {
         try {
@@ -29,6 +29,15 @@ private static final String IMAGE_DIRECTORY = "C:\\usr\\ecommerce\\";
             return fileName;
         } catch (IOException ex) {
             throw new FileStorageException("Could not store file. Please try again!", ex);
+        }
+    }
+
+    public byte[] loadFile(String filename) {
+        try {
+            Path path = Paths.get(IMAGE_DIRECTORY + filename);
+            return Files.readAllBytes(path);
+        } catch (IOException e) {
+            throw new RuntimeException("Could not read file " + filename, e);
         }
     }
 }

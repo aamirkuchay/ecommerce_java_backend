@@ -12,6 +12,8 @@ import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import java.util.ArrayList;
@@ -178,6 +180,19 @@ public class ProductServiceImpl implements ProductService {
         return buildProductResponseDto(savedProduct);
     }
 
+    @Override
+    public ProductResponseDto getProductById(Long productId) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found with ID: " + productId));
+
+        return buildProductResponseDto(product);
+    }
+
+    @Override
+    public Page<ProductResponseDto> getAllProducts(Pageable pageable, String category, String brand, Double minPrice, Double maxPrice) {
+        Page<Product> productsPage = productRepository.findByCriteria(pageable, category, brand, minPrice, maxPrice);
+        return productsPage.map(this::buildProductResponseDto);
+    }
 
 
     private ProductResponseDto buildProductResponseDto(Product product) {
