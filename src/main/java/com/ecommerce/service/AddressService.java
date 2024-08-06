@@ -6,4 +6,6 @@ public interface AddressService {
     Address createAddress(Long userId, Address address);
 
     Address getAddressById(Long id);
+
+    Address getAddressByUserId(Long userId);
 }

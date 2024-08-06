@@ -38,4 +38,15 @@ public class AddressController {
         }
     }
 
+
+    @GetMapping("/{userId}/user-address")
+    public ResponseEntity<Address> getAddressByUser(@PathVariable("userId") Long userId) {
+        Address address = addressService.getAddressByUserId(userId);
+        if (address != null) {
+            return new ResponseEntity<>(address, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
 }

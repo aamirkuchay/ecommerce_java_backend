@@ -30,5 +30,10 @@ public class AddressServiceImpl implements AddressService {
         return addressRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Address of given id is not present"));
     }
 
+    @Override
+    public Address getAddressByUserId(Long userId) {
+        return addressRepository.findByUserId(userId);
+    }
+
 
 }
