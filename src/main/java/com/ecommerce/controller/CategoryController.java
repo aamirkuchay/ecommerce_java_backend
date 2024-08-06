@@ -1,5 +1,7 @@
 package com.ecommerce.controller;
 
+import com.ecommerce.dto.CategoryDTO;
+import com.ecommerce.dto.CategoryResponseDTO;
 import com.ecommerce.entity.Category;
 import com.ecommerce.exception.ResourceNotFoundException;
 import com.ecommerce.service.CategoryService;
@@ -19,46 +21,38 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
-
     @PostMapping
-    public Category createCategory(@RequestBody Category category) {
-        return categoryService.saveCategory(category);
+    public ResponseEntity<CategoryResponseDTO> addCategory(@RequestBody CategoryDTO categoryDTO,
+                                                           @RequestParam(required = false) Long parentId) {
+        CategoryResponseDTO savedCategory = categoryService.addCategory(categoryDTO, parentId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedCategory);
     }
 
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Category> getCategoryById(@PathVariable Long id) {
-        Optional<Category> category = categoryService.getCategoryById(id);
-        return category.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
-    }
-
-
-
-    @PutMapping("/{id}")
-    public ResponseEntity<Category> updateCategory(@PathVariable Long id, @RequestBody Category categoryDetails) {
-        try {
-            Category updatedCategory = categoryService.updateCategory(id, categoryDetails);
-            return ResponseEntity.ok(updatedCategory);
-        } catch (ResourceNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCategory(@PathVariable Long id) {
-        try {
-            categoryService.deleteCategory(id);
-            return ResponseEntity.noContent().build();
-        } catch (ResourceNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
+    @PostMapping("/{parentId}/subcategories")
+    public ResponseEntity<CategoryResponseDTO> addSubcategory(@PathVariable Long parentId,
+                                                              @RequestBody CategoryDTO categoryDTO) {
+        CategoryResponseDTO savedSubcategory = categoryService.addSubcategory(parentId, categoryDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedSubcategory);
     }
 
     @GetMapping
-    public Page<Category> getAllCategories(@RequestParam(defaultValue = "0") int page) {
-        return categoryService.getAllCategories(page);
+    public ResponseEntity<List<CategoryResponseDTO>> getAllRootCategories() {
+        List<CategoryResponseDTO> rootCategories = categoryService.getAllRootCategories();
+        return ResponseEntity.ok(rootCategories);
     }
+
+    @GetMapping("/{categoryId}/subcategories")
+    public ResponseEntity<List<CategoryResponseDTO>> getAllSubcategories(@PathVariable Long categoryId) {
+        List<CategoryResponseDTO> subcategories = categoryService.getAllSubcategories(categoryId);
+        return ResponseEntity.ok(subcategories);
+    }
+
+    @GetMapping("/{categoryId}")
+    public ResponseEntity<CategoryResponseDTO> getCategoryById(@PathVariable Long categoryId) {
+        CategoryResponseDTO category = categoryService.getCategoryById(categoryId);
+        return ResponseEntity.ok(category);
+    }
+
 
 
 
