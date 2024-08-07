@@ -10,6 +10,8 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @AllArgsConstructor
 @Service
 public class AddressServiceImpl implements AddressService {
@@ -31,7 +33,7 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public Address getAddressByUserId(Long userId) {
+    public List<Address> getAddressByUserId(Long userId) {
         return addressRepository.findByUserId(userId);
     }
 

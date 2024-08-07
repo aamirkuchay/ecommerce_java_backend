@@ -1,6 +1,7 @@
 package com.ecommerce.entity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -69,7 +70,7 @@ public class User implements UserDetails {
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-	private List<Address> addresses;
+	private List<Address> addresses = new ArrayList<>();
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "user")

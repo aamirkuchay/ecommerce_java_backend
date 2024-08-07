@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/address")
 @AllArgsConstructor
@@ -40,8 +42,8 @@ public class AddressController {
 
 
     @GetMapping("/{userId}/user-address")
-    public ResponseEntity<Address> getAddressByUser(@PathVariable("userId") Long userId) {
-        Address address = addressService.getAddressByUserId(userId);
+    public ResponseEntity<List<Address>> getAddressByUser(@PathVariable("userId") Long userId) {
+        List<Address> address = addressService.getAddressByUserId(userId);
         if (address != null) {
             return new ResponseEntity<>(address, HttpStatus.OK);
         } else {
