@@ -225,6 +225,7 @@ public class ProductServiceImpl implements ProductService {
         dto.setMetaTitle(product.getMetaTitle());
         dto.setMetaDescription(product.getMetaDescription());
         dto.setFeatured(product.isFeatured());
+        dto.setTotalQuantity(product.getTotalQuantity());
         dto.setCategories(product.getCategories().stream().map(Category::getId).collect(Collectors.toList()));
         dto.setBrandId(product.getBrand().getId());
 
