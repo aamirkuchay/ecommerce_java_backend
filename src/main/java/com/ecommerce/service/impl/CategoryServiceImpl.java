@@ -9,6 +9,9 @@ import com.ecommerce.exception.ResourceNotFoundException;
 import com.ecommerce.repository.CategoryRepository;
 import com.ecommerce.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -51,12 +54,15 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<CategoryResponseDTO> getAllRootCategories() {
-        List<Category> rootCategories = categoryRepository.findByParentIsNull();
-        return rootCategories.stream()
-                .map(this::convertToResponseDTO)
-                .collect(Collectors.toList());
+    public Page<CategoryResponseDTO> getAllRootCategories(int page) {
+        Pageable pageable = PageRequest.of(page , 10);
+        Page<Category> rootCategories = categoryRepository.findByParentIsNull(pageable);
+        return rootCategories.map(this::convertToResponseDTO);
+//        return rootCategories.stream()
+//                .map(this::convertToResponseDTO)
+//                .collect(Collectors.toList());
     }
+
 
     @Override
     public List<CategoryResponseDTO> getAllSubcategories(Long categoryId) {
@@ -96,3 +102,4 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
 }
+

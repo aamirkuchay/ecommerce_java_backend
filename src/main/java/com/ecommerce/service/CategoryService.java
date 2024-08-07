@@ -12,7 +12,7 @@ public interface CategoryService  {
 
     CategoryResponseDTO addCategory(CategoryDTO categoryDTO, Long parentId);
     CategoryResponseDTO addSubcategory(Long parentId, CategoryDTO categoryDTO);
-    List<CategoryResponseDTO> getAllRootCategories();
+    Page<CategoryResponseDTO> getAllRootCategories(int page);
     List<CategoryResponseDTO> getAllSubcategories(Long categoryId);
     CategoryResponseDTO getCategoryById(Long id);
 

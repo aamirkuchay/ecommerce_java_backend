@@ -5,6 +5,7 @@ import com.ecommerce.dto.CategoryResponseDTO;
 
 import com.ecommerce.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,8 +34,8 @@ public class CategoryController {
     }
 
     @GetMapping
-    public ResponseEntity<List<CategoryResponseDTO>> getAllRootCategories() {
-        List<CategoryResponseDTO> rootCategories = categoryService.getAllRootCategories();
+    public ResponseEntity<Page<CategoryResponseDTO>> getAllRootCategories(@RequestParam(defaultValue = "0") int page) {
+        Page<CategoryResponseDTO> rootCategories = categoryService.getAllRootCategories(page);
         return ResponseEntity.ok(rootCategories);
     }
 
