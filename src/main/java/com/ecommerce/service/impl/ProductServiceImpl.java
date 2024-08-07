@@ -16,11 +16,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @Transactional
@@ -131,7 +130,7 @@ public class ProductServiceImpl implements ProductService {
                                 size.setSku(sku);
                                 size.setSize(sizeRepository.findById(sizeDTO.getSizeId())
                                         .orElseThrow(() -> new ResourceNotFoundException("Size " + sizeDTO.getSizeId())));
-                                size.setQuantity(sizeDTO.getQuantity()); // Ensure this is not null
+                                size.setQuantity(sizeDTO.getQuantity());
                                 return size;
                             })
                             .collect(Collectors.toList());
@@ -174,7 +173,17 @@ public class ProductServiceImpl implements ProductService {
             skuAttributeRepository.saveAll(sku.getSkuAttributes());
         });
         savedProduct.setSkus(savedSkus);
-        // Save and build response DTO
+
+        long totalQuantity = savedSkus.stream()
+                .flatMap(sku -> Stream.concat(
+                        sku.getSizes().stream().map(SKUSize::getQuantity),
+                        sku.getWeights().stream().map(SKUWeight::getQuantity)
+                ))
+                .filter(Objects::nonNull)
+                .mapToLong(quantity -> quantity.longValue())
+                .sum();
+        savedProduct.setTotalQuantity(totalQuantity);
+
         productRepository.save(savedProduct);
 
         return buildProductResponseDto(savedProduct);

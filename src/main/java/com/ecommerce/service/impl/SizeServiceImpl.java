@@ -48,7 +48,7 @@ public class SizeServiceImpl implements SizeService {
 
     @Override
     public Page<Size> getAllSizes(int page) {
-        Pageable pageable = PageRequest.of(page - 1, 10);
+        Pageable pageable = PageRequest.of(page , 10);
         return sizeRepository.findAll(pageable);
     }
 }

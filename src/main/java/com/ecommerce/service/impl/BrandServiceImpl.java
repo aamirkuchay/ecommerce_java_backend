@@ -49,7 +49,7 @@ public class BrandServiceImpl implements BrandService {
 
     @Override
     public Page<Brand> getAllBrands(int page) {
-        Pageable pageable = PageRequest.of(page - 1, 10);
+        Pageable pageable = PageRequest.of(page , 10);
         return brandRepository.findAll(pageable);
     }
 }

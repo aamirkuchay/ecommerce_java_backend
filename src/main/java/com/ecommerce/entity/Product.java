@@ -71,6 +71,8 @@ public class Product {
     @Column(nullable = false)
     private boolean isFeatured = false;
 
+    private Long totalQuantity = 0L;
+
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
