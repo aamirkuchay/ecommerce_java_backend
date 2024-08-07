@@ -28,10 +28,20 @@ public class OrderItem {
     @JoinColumn(name = "product_sku_id", nullable = false)
     private ProductSKU productSku;
 
-    @Column(nullable = false)
+
+    @ManyToOne
+    @JoinColumn(name = "size_id")
+    private Size size;
+
+    @ManyToOne
+    @JoinColumn(name = "weight_id")
+    private Weight weight;
+
+
+//    @Column(nullable = false)
     private Integer quantity;
 
-    @Column(nullable = false)
+//    @Column(nullable = false)
     private BigDecimal price;
 
 }

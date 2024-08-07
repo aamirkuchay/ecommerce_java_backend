@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter @Setter @AllArgsConstructor @NoArgsConstructor
@@ -23,14 +24,7 @@ public class ProductSKU {
     @Column(nullable = false, unique = true)
     private String sku;
 
-//    @Column(nullable = false)
     private BigDecimal price;
-
-//    @Column(nullable = false)
-//    private Integer quantity;
-
-//    @Column(nullable = false)
-//    private Double weight;
 
 
     @ManyToOne
@@ -38,12 +32,15 @@ public class ProductSKU {
     private ProductColor color;
 
     @OneToMany(mappedBy = "sku", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<SKUSize> sizes;
+    private List<SKUSize> sizes = new ArrayList<>();
 
     @OneToMany(mappedBy = "sku", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<SKUWeight> weights;
+    private List<SKUWeight> weights = new ArrayList<>();
 
 
     @OneToMany(mappedBy = "sku", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<SKUAttribute> skuAttributes;
+    private List<SKUAttribute> skuAttributes = new ArrayList<>();
+
+
+
 }
