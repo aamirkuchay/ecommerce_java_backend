@@ -46,7 +46,7 @@ public class WeightServiceImpl implements WeightService {
 
     @Override
     public Page<Weight> getAllWeights(int page) {
-        Pageable pageable = PageRequest.of(page - 1, 10);
+        Pageable pageable = PageRequest.of(page , 10);
         return weightRepository.findAll(pageable);
     }
 }
