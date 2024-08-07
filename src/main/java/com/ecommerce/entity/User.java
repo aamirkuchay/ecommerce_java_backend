@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -59,16 +60,18 @@ public class User implements UserDetails {
 	@Column(name = "username")
 	private String username;
 
+	@JsonIgnore
 	@OneToOne(mappedBy = "user")
 	private Cart cart;
 
 	@UpdateTimestamp
 	private LocalDateTime updated;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-
 	private List<Address> addresses;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "user")
 	private List<Order> orders;
 
