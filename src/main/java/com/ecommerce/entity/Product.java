@@ -1,5 +1,6 @@
 package com.ecommerce.entity;
 
+import com.ecommerce.exception.ResourceNotFoundException;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -93,6 +94,15 @@ public class Product {
 
     public void setFeatured(boolean featured) {
         isFeatured = featured;
+    }
+
+
+
+    public void reduceQuantity(Long quantityToReduce) {
+        if (this.totalQuantity < quantityToReduce) {
+            throw new ResourceNotFoundException("Not enough quantity available");
+        }
+        this.totalQuantity -= quantityToReduce;
     }
 
 

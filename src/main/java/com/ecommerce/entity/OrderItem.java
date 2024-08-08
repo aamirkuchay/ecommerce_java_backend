@@ -29,13 +29,13 @@ public class OrderItem {
     private ProductSKU productSku;
 
 
-    @ManyToOne
-    @JoinColumn(name = "size_id")
-    private Size size;
-
-    @ManyToOne
-    @JoinColumn(name = "weight_id")
-    private Weight weight;
+//    @ManyToOne
+//    @JoinColumn(name = "size_id")
+//    private Size size;
+//
+//    @ManyToOne
+//    @JoinColumn(name = "weight_id")
+//    private Weight weight;
 
 
 //    @Column(nullable = false)

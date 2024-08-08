@@ -1,6 +1,7 @@
 package com.ecommerce.controller;
 
 
+import com.ecommerce.dto.CreateOrderRequest;
 import com.ecommerce.dto.OrderDTO;
 import com.ecommerce.entity.Order;
 import com.ecommerce.exception.ResourceNotFoundException;
@@ -21,14 +22,16 @@ public class OrderController {
     private final OrderService orderService;
 
 
-    @PostMapping("/create")
-    public ResponseEntity<OrderDTO> createOrder(@RequestBody Long userId) {
+    @PostMapping
+    public ResponseEntity<OrderDTO> createOrder(@RequestBody CreateOrderRequest request) {
         try {
+            Long userId = request.getUserId();
             OrderDTO orderDTO = orderService.createOrder(userId);
             return new ResponseEntity<>(orderDTO, HttpStatus.CREATED);
         } catch (ResourceNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception e) {
+            System.err.println(e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

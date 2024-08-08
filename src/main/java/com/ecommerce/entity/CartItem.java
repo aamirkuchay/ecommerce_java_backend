@@ -24,6 +24,16 @@ public class CartItem {
     @JoinColumn(name = "cart_id", nullable = false)
     private Cart cart;
 
+
+    @ManyToOne
+    @JoinColumn(name = "size_id")
+    private Size size; // Add this field
+
+    @ManyToOne
+    @JoinColumn(name = "weight_id")
+    private Weight weight; // Add this field
+
+
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;

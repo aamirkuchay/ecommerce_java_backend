@@ -12,8 +12,11 @@ import java.util.Optional;
 
 @Repository
 public interface ProductSKURepository extends JpaRepository<ProductSKU,Long> {
+    Optional<ProductSKU> findByProductAndSkuIn(Product product, List<String> skus);
 
-    @Query("SELECT ps FROM ProductSKU ps WHERE ps.product = :product AND ps.sku IN :skus")
-    Optional<ProductSKU> findByProductAndSkus(@Param("product") Product product, @Param("skus") List<ProductSKU> skus);
 
+//    @Query("SELECT ps FROM ProductSKU ps WHERE ps.product = :product AND ps.sku IN :skus")
+//    Optional<ProductSKU> findByProductAndSkus(@Param("product") Product product, @Param("skus") List<String> skus);
+
+    
 }
