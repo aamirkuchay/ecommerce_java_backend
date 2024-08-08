@@ -124,6 +124,23 @@ public class OrderServiceImpl implements OrderService {
         return mapToOrderDTO(order);
     }
 
+    @Override
+    public List<OrderDTO> getOrdersByUserId(Long userId) {
+        List<Order> orders = orderRepository.findByUserId(userId);
+        return orders.stream()
+                .map(this::mapToOrderDTO)
+                .collect(Collectors.toList());
+    }
+
+
+
+
+
+
+
+
+
+
     private void updateSKUQuantities(ProductSKU productSKU, Integer quantity, Size orderedSize, Weight orderedWeight) {
 
         for (SKUSize skuSize : productSKU.getSizes()) {
