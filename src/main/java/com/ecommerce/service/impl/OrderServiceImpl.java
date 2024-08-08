@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional
 public class OrderServiceImpl implements OrderService {
 
     @Autowired
@@ -47,7 +46,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Transactional
     public OrderDTO createOrder(Long userId) {
-        // Fetch or create cart
+
         Cart cart = cartRepository.findByUserId(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Cart not found"));
 
@@ -55,7 +54,7 @@ public class OrderServiceImpl implements OrderService {
             throw new ResourceNotFoundException("Cart is empty");
         }
 
-        // Create order
+
         Order order = new Order();
         order.setUser(cart.getUser());
         order.setTotalAmount(calculateTotalAmount(cart));
@@ -65,7 +64,7 @@ public class OrderServiceImpl implements OrderService {
 
         List<OrderItem> orderItems = new ArrayList<>();
 
-        // Process each cart item
+
         for (CartItem cartItem : cart.getCartItems()) {
             Product product = cartItem.getProduct();
             List<String> skus = product.getSkus().stream()
@@ -87,16 +86,16 @@ public class OrderServiceImpl implements OrderService {
             orderItem.setQuantity(cartItem.getQuantity());
             orderItems.add(orderItem);
 
-            // Update SKU size and weight quantities
+
             updateSKUQuantities(productSKU, cartItem.getQuantity(), orderedSize, orderedWeight);
         }
 
         order.setItems(orderItems);
 
-        // Save order
+
         order = orderRepository.save(order);
 
-        // Clear cart
+
         cart.getCartItems().clear();
         cartRepository.save(cart);
 
@@ -104,22 +103,22 @@ public class OrderServiceImpl implements OrderService {
     }
 
     private void updateSKUQuantities(ProductSKU productSKU, Integer quantity, Size orderedSize, Weight orderedWeight) {
-        // Update SKU sizes
+
         for (SKUSize skuSize : productSKU.getSizes()) {
             if (skuSize.getSize().equals(orderedSize)) {
                 skuSize.setQuantity(skuSize.getQuantity() - quantity);
                 System.err.println(skuSize +"ssssssssssssssssssssssssssssssss");
                 skuSizeRepository.save(skuSize);
-                break;  // Exit the loop once the matching size is found
+                break;
             }
         }
 
-        // Update SKU weights
+
         for (SKUWeight skuWeight : productSKU.getWeights()) {
             if (skuWeight.getWeight().equals(orderedWeight)) {
                 skuWeight.setQuantity(skuWeight.getQuantity() - quantity);
                 skuWeightRepository.save(skuWeight);
-                break;  // Exit the loop once the matching weight is found
+                break;  
             }
         }
     }
