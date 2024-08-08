@@ -54,13 +54,34 @@ public class OrderServiceImpl implements OrderService {
             throw new ResourceNotFoundException("Cart is empty");
         }
 
+        List<Address> addressList = addressRepository.findByUserId(userId);
+        if (addressList.isEmpty()) {
+            throw new ResourceNotFoundException("No addresses found for user");
+        }
+
+
+        Address shippingAddress = addressList.stream()
+                .filter(Address::isDefault)
+                .findFirst()
+                .orElseThrow(() -> new ResourceNotFoundException("Default shipping address not found"));
+
+        Address billingAddress = addressList.stream()
+                .filter(Address::isDefault)
+                .findFirst()
+                .orElseThrow(() -> new ResourceNotFoundException("Default billing address not found"));
+
+
+
 
         Order order = new Order();
         order.setUser(cart.getUser());
         order.setTotalAmount(calculateTotalAmount(cart));
-        order.setStatus(ProductStatus.AVAILABLE);
+        order.setStatus(ProductStatus.APPROVED);
         order.setCreatedAt(LocalDateTime.now());
         order.setUpdatedAt(LocalDateTime.now());
+        order.setShippingAddress(shippingAddress);
+        order.setBillingAddress(billingAddress);
+
 
         List<OrderItem> orderItems = new ArrayList<>();
 
@@ -82,6 +103,7 @@ public class OrderServiceImpl implements OrderService {
 
             OrderItem orderItem = new OrderItem();
             orderItem.setOrder(order);
+            orderItem.setPrice(product.getBasePrice());
             orderItem.setProductSku(productSKU);
             orderItem.setQuantity(cartItem.getQuantity());
             orderItems.add(orderItem);
@@ -107,7 +129,7 @@ public class OrderServiceImpl implements OrderService {
         for (SKUSize skuSize : productSKU.getSizes()) {
             if (skuSize.getSize().equals(orderedSize)) {
                 skuSize.setQuantity(skuSize.getQuantity() - quantity);
-                System.err.println(skuSize +"ssssssssssssssssssssssssssssssss");
+                System.out.println(skuSize+"sssssssssssssssssssssssssss");
                 skuSizeRepository.save(skuSize);
                 break;
             }
@@ -118,7 +140,7 @@ public class OrderServiceImpl implements OrderService {
             if (skuWeight.getWeight().equals(orderedWeight)) {
                 skuWeight.setQuantity(skuWeight.getQuantity() - quantity);
                 skuWeightRepository.save(skuWeight);
-                break;  
+                break;
             }
         }
     }
