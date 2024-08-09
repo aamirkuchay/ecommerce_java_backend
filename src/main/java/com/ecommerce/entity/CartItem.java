@@ -28,17 +28,28 @@ public class CartItem {
 
 
     @ManyToOne
-    @JoinColumn(name = "size_id")
-    @Nullable
+    @JoinColumn(name = "size_id", nullable = true)
     private Size size;
 
     @ManyToOne
-    @Nullable
-    @JoinColumn(name = "weight_id")
+    @JoinColumn(name = "weight_id",nullable = true)
     private Weight weight;
 
 
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
+
+
+
+    public Long getWeightId() {
+        return (weight != null) ? weight.getId() : null;
+    }
+
+
+    public Long getSizeId() {
+        return (weight != null) ? weight.getId() : null;
+    }
+
+
 }

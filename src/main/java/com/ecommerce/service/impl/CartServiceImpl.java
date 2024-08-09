@@ -9,7 +9,6 @@ import com.ecommerce.repository.*;
 import com.ecommerce.service.CartService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,32 +26,16 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public CartDTO addItemToCart(Long userId, CartItemDTO cartItemDTO) {
-        // Fetch or create cart
+
         Cart cart = cartRepository.findByUserId(userId).orElseGet(() -> createCart(userId));
 
-        // Fetch product
         Product product = productRepository.findById(cartItemDTO.getProductId())
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
 
 
-        Size size = null;
-        if (cartItemDTO.getSizeId() != null) {
-            size = sizeRepository.findById(cartItemDTO.getSizeId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Size not found"));
-        }
+        Size size = cartItemDTO.getSizeId() != null ? sizeRepository.findById(cartItemDTO.getSizeId()).orElse(null) : null;
+        Weight weight = cartItemDTO.getWeightId() != null ? weightRepository.findById(cartItemDTO.getWeightId()).orElse(null) : null;
 
-        // Fetch weight
-        Weight weight = null;
-        if (cartItemDTO.getWeightId() != null) {
-           weight = weightRepository.findById(cartItemDTO.getWeightId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Weight not found"));
-        }
-
-
-        // Create or update cart item
-//        CartItem cartItem = cartItemRepository.findByCartAndProduct(cart, product)
-//                .orElse(new CartItem());
-        // Create or update cart item
         CartItem cartItem = cartItemRepository.findByCartAndProductAndSizeAndWeight(cart, product, size, weight)
                 .orElse(new CartItem());
 
@@ -61,12 +44,9 @@ public class CartServiceImpl implements CartService {
         cartItem.setQuantity(cartItemDTO.getQuantity());
         cartItem.setSize(size);
         cartItem.setWeight(weight);
-
-
         cartItemRepository.save(cartItem);
         cart.getCartItems().add(cartItem);
         cartRepository.save(cart);
-
         return mapToCartDTO(cart);
     }
 
@@ -74,7 +54,6 @@ public class CartServiceImpl implements CartService {
     public CartDTO getCart(Long userId) {
         Cart cart = cartRepository.findByUserId(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Cart not found for user " + userId));
-
         return mapToCartDTO(cart);
     }
 
@@ -96,8 +75,17 @@ public class CartServiceImpl implements CartService {
             CartItemDTO itemDTO = new CartItemDTO();
             itemDTO.setProductId(cartItem.getProduct().getId());
             itemDTO.setQuantity(cartItem.getQuantity());
-            itemDTO.setSizeId(cartItem.getSize().getId());
-            itemDTO.setWeightId(cartItem.getWeight().getId());
+            if (cartItem.getSize() != null) {
+                itemDTO.setSizeId(cartItem.getSize().getId());
+            } else {
+                itemDTO.setSizeId(null);
+            }
+
+            if (cartItem.getWeight() != null) {
+                itemDTO.setWeightId(cartItem.getWeight().getId());
+            } else {
+                itemDTO.setWeightId(null);
+            }
             return itemDTO;
         }).collect(Collectors.toList());
 

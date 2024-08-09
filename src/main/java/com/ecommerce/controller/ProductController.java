@@ -26,16 +26,6 @@ public class ProductController {
     private final ProductService productService;
 
 
-
-
-//    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-//    public ResponseEntity<ProductResponseDto> createProduct(
-//            @RequestPart("product")  ProductDto productCreateDto,
-//            @RequestPart("images") List<MultipartFile> images) {
-//        ProductResponseDto createdProduct = productService.createProduct(productCreateDto, images);
-//        return new ResponseEntity<>(createdProduct, HttpStatus.CREATED);
-//    }
-
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> createProduct(
             @RequestPart("product") String productJson,
@@ -43,12 +33,10 @@ public class ProductController {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             ProductDto productCreateDto = objectMapper.readValue(productJson, ProductDto.class);
-
-            // Create product
             ProductResponseDto createdProduct = productService.createProduct(productCreateDto, images);
             return new ResponseEntity<>(createdProduct, HttpStatus.CREATED);
         } catch (Exception e) {
-            e.printStackTrace();
+//            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Error creating product: " + e.getMessage());
         }
