@@ -10,9 +10,11 @@ import jakarta.transaction.Transactional;
 
 import lombok.AllArgsConstructor;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -38,6 +40,8 @@ public class ProductServiceImpl implements ProductService {
     private final SKUSizeRepository skuSizeRepository;
     private final SKUWeightRepository skuWeightRepository;
     private final SKUAttributeRepository skuAttributeRepository;
+
+    private final RedisTemplate redisTemplate;
 
     private static final String IMAGE_DIRECTORY = "C:\\usr\\ecommerce\\";
 
@@ -213,7 +217,9 @@ public class ProductServiceImpl implements ProductService {
         productRepository.delete(product);
     }
 
-    @Override
+//    @Cacheable(value = "productsCache", key = "#categoryName.concat('-').concat(#pageable.pageNumber).concat('-').concat(#pageable.pageSize).concat('-').concat(#pageable.sort.toString())")
+@Cacheable(value = "productsCache", key = "#categoryName.concat('-').concat(#pageable.pageNumber).concat('-').concat(#pageable.pageSize).concat('-').concat(#pageable.sort.toString())")
+@Override
     public Page<ProductResponseDto> getProductsByCategory(String categoryName, Pageable pageable) {
         Category category = (Category) categoryRepository.findByName(categoryName)
                 .orElseThrow(() -> new ResourceNotFoundException("Category not found: " + categoryName));
