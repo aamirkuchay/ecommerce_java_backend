@@ -51,7 +51,7 @@ public class ProductController {
         return new ResponseEntity<>(productResponse, HttpStatus.OK);
     }
 
-    @GetMapping
+    @GetMapping("/getAllProducts")
     public ResponseEntity<Page<ProductResponseDto>> getAllProducts(
             @PageableDefault(size = 20, sort = "name", direction = Sort.Direction.ASC) Pageable pageable,
             @RequestParam(required = false) String category,
