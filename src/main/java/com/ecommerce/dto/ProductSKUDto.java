@@ -1,11 +1,13 @@
 package com.ecommerce.dto;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
 
+@NoArgsConstructor
 @Data
 public class ProductSKUDto {
     private String sku;

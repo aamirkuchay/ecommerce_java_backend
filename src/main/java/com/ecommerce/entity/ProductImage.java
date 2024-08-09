@@ -22,10 +22,9 @@ public class ProductImage {
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
-//    @Column(nullable = false)
+
     private String url;
 
-//    @Column(nullable = false)
     private boolean isPrimary;
 
 

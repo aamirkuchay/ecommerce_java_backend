@@ -1,5 +1,6 @@
 package com.ecommerce.entity;
 
+import com.ecommerce.exception.ResourceNotFoundException;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,4 +21,13 @@ import lombok.Setter;
 
         @Column(nullable = false)
         private Integer quantity;
+
+
+
+        public void reduceQuantity(Integer quantityToReduce) {
+            if (this.quantity < quantityToReduce) {
+                throw new ResourceNotFoundException("Not enough quantity available for the selected weight");
+            }
+            this.quantity -= quantityToReduce;
+        }
 }

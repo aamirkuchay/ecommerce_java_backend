@@ -101,6 +101,9 @@ public class OrderServiceImpl implements OrderService {
             product.reduceQuantity(Long.valueOf(cartItem.getQuantity()));
             productRepository.save(product);
 
+
+            updateSKUQuantities(productSKU, cartItem.getQuantity(), orderedSize, orderedWeight);
+
             OrderItem orderItem = new OrderItem();
             orderItem.setOrder(order);
             orderItem.setPrice(product.getBasePrice());
@@ -109,7 +112,6 @@ public class OrderServiceImpl implements OrderService {
             orderItems.add(orderItem);
 
 
-            updateSKUQuantities(productSKU, cartItem.getQuantity(), orderedSize, orderedWeight);
         }
 
         order.setItems(orderItems);
@@ -139,28 +141,37 @@ public class OrderServiceImpl implements OrderService {
 
 
 
-
-
     private void updateSKUQuantities(ProductSKU productSKU, Integer quantity, Size orderedSize, Weight orderedWeight) {
+        try {
+            // Update SKU sizes
+            for (SKUSize skuSize : productSKU.getSizes()) {
 
-        for (SKUSize skuSize : productSKU.getSizes()) {
-            if (skuSize.getSize().equals(orderedSize)) {
-                skuSize.setQuantity(skuSize.getQuantity() - quantity);
-                System.out.println(skuSize+"sssssssssssssssssssssssssss");
-                skuSizeRepository.save(skuSize);
-                break;
+                if (skuSize.getSize().equals(orderedSize)) {
+                    int newQuantity = skuSize.getQuantity() - quantity;
+                    if (newQuantity <= 0) {
+                        throw new ResourceNotFoundException("Not enough quantity available for the selected size");
+                    }
+                    skuSize.setQuantity(newQuantity);
+                    skuSizeRepository.save(skuSize);
+
+                    break;
+            }}
+
+            // Update SKU weights
+            for (SKUWeight skuWeight : productSKU.getWeights()) {
+                if (skuWeight.getWeight().equals(orderedWeight)) {
+                    skuWeight.reduceQuantity(quantity);
+                    skuWeightRepository.save(skuWeight);
+                    break;
+                }
             }
-        }
-
-
-        for (SKUWeight skuWeight : productSKU.getWeights()) {
-            if (skuWeight.getWeight().equals(orderedWeight)) {
-                skuWeight.setQuantity(skuWeight.getQuantity() - quantity);
-                skuWeightRepository.save(skuWeight);
-                break;
-            }
+        } catch (ResourceNotFoundException e) {
+            throw new ResourceNotFoundException("Unable to find the requested size or weight for the product SKU.", e);
         }
     }
+
+
+
 
     private BigDecimal calculateTotalAmount(Cart cart) {
         return cart.getCartItems().stream()

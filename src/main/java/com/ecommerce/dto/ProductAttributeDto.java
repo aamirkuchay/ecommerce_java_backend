@@ -1,8 +1,9 @@
 package com.ecommerce.dto;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Data
+@Data @NoArgsConstructor
 public class ProductAttributeDto {
     private String name;
     private String value;

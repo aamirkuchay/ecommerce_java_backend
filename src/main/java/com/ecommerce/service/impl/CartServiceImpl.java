@@ -3,14 +3,9 @@ package com.ecommerce.service.impl;
 import com.ecommerce.dto.CartDTO;
 import com.ecommerce.dto.CartItemDTO;
 import com.ecommerce.dto.UserDTO;
-import com.ecommerce.entity.Cart;
-import com.ecommerce.entity.CartItem;
-import com.ecommerce.entity.Product;
+import com.ecommerce.entity.*;
 import com.ecommerce.exception.ResourceNotFoundException;
-import com.ecommerce.repository.CartItemRepository;
-import com.ecommerce.repository.CartRepository;
-import com.ecommerce.repository.ProductRepository;
-import com.ecommerce.repository.UserRepository;
+import com.ecommerce.repository.*;
 import com.ecommerce.service.CartService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,6 +22,9 @@ public class CartServiceImpl implements CartService {
     private final CartRepository cartRepository;
     private final UserRepository userRepository;
 
+    private final SizeRepository sizeRepository;
+    private final WeightRepository weightRepository;
+
     @Override
     public CartDTO addItemToCart(Long userId, CartItemDTO cartItemDTO) {
         // Fetch or create cart
@@ -36,12 +34,34 @@ public class CartServiceImpl implements CartService {
         Product product = productRepository.findById(cartItemDTO.getProductId())
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
 
+
+        Size size = null;
+        if (cartItemDTO.getSizeId() != null) {
+            size = sizeRepository.findById(cartItemDTO.getSizeId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Size not found"));
+        }
+
+        // Fetch weight
+        Weight weight = null;
+        if (cartItemDTO.getWeightId() != null) {
+           weight = weightRepository.findById(cartItemDTO.getWeightId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Weight not found"));
+        }
+
+
         // Create or update cart item
-        CartItem cartItem = cartItemRepository.findByCartAndProduct(cart, product)
+//        CartItem cartItem = cartItemRepository.findByCartAndProduct(cart, product)
+//                .orElse(new CartItem());
+        // Create or update cart item
+        CartItem cartItem = cartItemRepository.findByCartAndProductAndSizeAndWeight(cart, product, size, weight)
                 .orElse(new CartItem());
+
         cartItem.setCart(cart);
         cartItem.setProduct(product);
         cartItem.setQuantity(cartItemDTO.getQuantity());
+        cartItem.setSize(size);
+        cartItem.setWeight(weight);
+
 
         cartItemRepository.save(cartItem);
         cart.getCartItems().add(cartItem);
@@ -76,6 +96,8 @@ public class CartServiceImpl implements CartService {
             CartItemDTO itemDTO = new CartItemDTO();
             itemDTO.setProductId(cartItem.getProduct().getId());
             itemDTO.setQuantity(cartItem.getQuantity());
+            itemDTO.setSizeId(cartItem.getSize().getId());
+            itemDTO.setWeightId(cartItem.getWeight().getId());
             return itemDTO;
         }).collect(Collectors.toList());
 

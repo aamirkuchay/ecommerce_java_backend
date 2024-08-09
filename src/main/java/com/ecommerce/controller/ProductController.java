@@ -3,12 +3,15 @@ package com.ecommerce.controller;
 import com.ecommerce.dto.ProductDto;
 import com.ecommerce.dto.ProductResponseDto;
 import com.ecommerce.service.ProductService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,13 +28,32 @@ public class ProductController {
 
 
 
-    @PostMapping(consumes = "multipart/form-data")
-    public ResponseEntity<ProductResponseDto> createProduct(
-            @RequestPart("product")  ProductDto productCreateDto,
+//    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+//    public ResponseEntity<ProductResponseDto> createProduct(
+//            @RequestPart("product")  ProductDto productCreateDto,
+//            @RequestPart("images") List<MultipartFile> images) {
+//        ProductResponseDto createdProduct = productService.createProduct(productCreateDto, images);
+//        return new ResponseEntity<>(createdProduct, HttpStatus.CREATED);
+//    }
+
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> createProduct(
+            @RequestPart("product") String productJson,
             @RequestPart("images") List<MultipartFile> images) {
-        ProductResponseDto createdProduct = productService.createProduct(productCreateDto, images);
-        return new ResponseEntity<>(createdProduct, HttpStatus.CREATED);
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            ProductDto productCreateDto = objectMapper.readValue(productJson, ProductDto.class);
+
+            // Create product
+            ProductResponseDto createdProduct = productService.createProduct(productCreateDto, images);
+            return new ResponseEntity<>(createdProduct, HttpStatus.CREATED);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error creating product: " + e.getMessage());
+        }
     }
+
 
 
     @GetMapping("/{id}")

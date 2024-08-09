@@ -1,5 +1,7 @@
 package com.ecommerce.entity;
 
+
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -27,11 +29,13 @@ public class CartItem {
 
     @ManyToOne
     @JoinColumn(name = "size_id")
-    private Size size; // Add this field
+    @Nullable
+    private Size size;
 
     @ManyToOne
+    @Nullable
     @JoinColumn(name = "weight_id")
-    private Weight weight; // Add this field
+    private Weight weight;
 
 
     @ManyToOne
