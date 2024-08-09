@@ -7,12 +7,11 @@ import com.ecommerce.exception.ResourceNotFoundException;
 import com.ecommerce.repository.*;
 import com.ecommerce.service.ProductService;
 import jakarta.transaction.Transactional;
-import jakarta.validation.ValidationException;
+
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -213,6 +212,40 @@ public class ProductServiceImpl implements ProductService {
         productAttributeRepository.deleteAll(product.getAttributes());
         productRepository.delete(product);
     }
+
+    @Override
+    public Page<ProductResponseDto> getProductsByCategory(String categoryName, Pageable pageable) {
+        Category category = (Category) categoryRepository.findByName(categoryName)
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found: " + categoryName));
+
+        Page<Product> productPage = productRepository.findByCategories(category, pageable);
+
+        return productPage.map(this::buildProductResponseDto);
+    }
+
+    @Override
+    public Page<ProductResponseDto> getProductsByBrand(Long brandId, PageRequest pageRequest) {
+        Brand brand = brandRepository.findById(brandId)
+                .orElseThrow(() -> new ResourceNotFoundException("Brand not found with id: " + brandId));
+        Page<Product> productPage = productRepository.findByBrand(brand, pageRequest);
+        return productPage.map(this::buildProductResponseDto);
+    }
+
+    @Override
+    public List<ProductResponseDto> getFeaturedProducts(int limit) {
+        List<Product> featuredProducts = productRepository.findByFeaturedTrue(PageRequest.of(0, limit));
+        return featuredProducts.stream()
+                .map(this::buildProductResponseDto)
+                .collect(Collectors.toList());
+    }
+
+
+    @Override
+    public Page<ProductResponseDto> searchProducts(String query, PageRequest pageable) {
+        Page<Product> productPage = productRepository.searchByNameOrDescription(query, pageable);
+        return productPage.map(this::buildProductResponseDto);
+    }
+
 
     private ProductResponseDto buildProductResponseDto(Product product) {
         ProductResponseDto dto = new ProductResponseDto();
