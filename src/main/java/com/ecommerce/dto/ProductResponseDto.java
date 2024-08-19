@@ -22,8 +22,8 @@ public class ProductResponseDto {
     private String metaTitle;
     private String metaDescription;
     private boolean isFeatured;
-    private List<Long> categories;
-    private Long brandId;
+    private List<CategoryDTO> categories;
+    private BrandDto brand;
     private Long totalQuantity = 0L;
     private List<ProductAttributeDto> attributes;
     private List<ProductImageDto> images;

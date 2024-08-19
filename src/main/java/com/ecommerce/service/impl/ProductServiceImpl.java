@@ -122,8 +122,8 @@ public class ProductServiceImpl implements ProductService {
                     sku.setPrice(skuDTO.getPrice());
 
                     // Set color
-                    ProductColor color = productColorRepository.findById(skuDTO.getColorId())
-                            .orElseThrow(() -> new ResourceNotFoundException("Color " + skuDTO.getColorId()));
+                    ProductColor color = productColorRepository.findById(skuDTO.getColor().getId())
+                            .orElseThrow(() -> new ResourceNotFoundException("Color " + skuDTO.getColor().getId()));
                     sku.setColor(color);
 
                     // Set sizes
@@ -252,7 +252,6 @@ public class ProductServiceImpl implements ProductService {
         return productPage.map(this::buildProductResponseDto);
     }
 
-
     private ProductResponseDto buildProductResponseDto(Product product) {
         ProductResponseDto dto = new ProductResponseDto();
         dto.setId(product.getId());
@@ -265,8 +264,14 @@ public class ProductServiceImpl implements ProductService {
         dto.setMetaDescription(product.getMetaDescription());
         dto.setFeatured(product.isFeatured());
         dto.setTotalQuantity(product.getTotalQuantity());
-        dto.setCategories(product.getCategories().stream().map(Category::getId).collect(Collectors.toList()));
-        dto.setBrandId(product.getBrand().getId());
+
+        // Set categories with full objects
+        dto.setCategories(product.getCategories().stream()
+                .map(this::buildCategoryDto)
+                .collect(Collectors.toList()));
+
+        // Set brand with full object
+        dto.setBrand(buildBrandDto(product.getBrand()));
 
         // Set attributes
         dto.setAttributes(product.getAttributes().stream()
@@ -284,16 +289,26 @@ public class ProductServiceImpl implements ProductService {
                     ProductSKUDto skuDTO = new ProductSKUDto();
                     skuDTO.setSku(sku.getSku());
                     skuDTO.setPrice(sku.getPrice());
-                    skuDTO.setColorId(sku.getColor().getId());
 
+                    // Set color
+                    if (sku.getColor() != null) {
+                        ProductColorDto colorDto = new ProductColorDto();
+                        colorDto.setId(sku.getColor().getId());
+                        colorDto.setName(sku.getColor().getName());
+                        skuDTO.setColor(colorDto);
+                    }
+
+                    // Set sizes with full objects
                     skuDTO.setSizes(sku.getSizes().stream()
-                            .map(size -> new SKUSizeDTO(size.getSize().getId(), size.getQuantity()))
+                            .map(this::buildSKUSizeDto)
                             .collect(Collectors.toList()));
 
+                    // Set weights
                     skuDTO.setWeights(sku.getWeights().stream()
-                            .map(weight -> new SKUWeightDTO(weight.getWeight().getId(), weight.getQuantity()))
+                            .map(this::buildSKUWeightDto)
                             .collect(Collectors.toList()));
 
+                    // Set SKU attributes
                     skuDTO.setAttributes(sku.getSkuAttributes().stream()
                             .map(attr -> new SKUAttributeDto(attr.getName(), attr.getValue()))
                             .collect(Collectors.toList()));
@@ -302,6 +317,51 @@ public class ProductServiceImpl implements ProductService {
                 })
                 .collect(Collectors.toList()));
 
+        return dto;
+    }
+
+    private CategoryDTO buildCategoryDto(Category category) {
+        CategoryDTO dto = new CategoryDTO();
+        dto.setId(category.getId());
+        dto.setName(category.getName());
+        dto.setSlug(category.getSlug());
+        return dto;
+    }
+
+    private BrandDto buildBrandDto(Brand brand) {
+        BrandDto dto = new BrandDto();
+        dto.setId(brand.getId());
+        dto.setName(brand.getName());
+        return dto;
+    }
+
+    private SKUSizeDTO buildSKUSizeDto(SKUSize skuSize) {
+        SKUSizeDTO dto = new SKUSizeDTO();
+        dto.setSizeId(skuSize.getId());
+        dto.setSize(buildSizeDto(skuSize.getSize()));
+        dto.setQuantity(skuSize.getQuantity());
+        return dto;
+    }
+
+    private SizeDto buildSizeDto(Size size) {
+        SizeDto dto = new SizeDto();
+        dto.setId(size.getId());
+        dto.setName(size.getName());
+        return dto;
+    }
+
+    private SKUWeightDTO buildSKUWeightDto(SKUWeight skuWeight) {
+        SKUWeightDTO dto = new SKUWeightDTO();
+        dto.setWeightId(skuWeight.getId());
+        dto.setWeight(buildWeightDto(skuWeight.getWeight()));
+        dto.setQuantity(skuWeight.getQuantity());
+        return dto;
+    }
+
+    private WeightDTO buildWeightDto(Weight weight) {
+        WeightDTO dto = new WeightDTO();
+        dto.setId(weight.getId());
+        dto.setValue(weight.getValue());
         return dto;
     }
 

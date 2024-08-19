@@ -6,6 +6,7 @@ import lombok.*;
 @Data @AllArgsConstructor
 public class SKUSizeDTO {
     private Long sizeId;
+    private SizeDto size;
     private Integer quantity;
 
 

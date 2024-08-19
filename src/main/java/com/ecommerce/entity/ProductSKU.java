@@ -14,7 +14,6 @@ import java.util.List;
 @Getter @Setter @AllArgsConstructor @NoArgsConstructor
 @Entity
 @JsonSerialize(using = ProductSKUSerializer.class)
-
 public class ProductSKU {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

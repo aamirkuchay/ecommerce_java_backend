@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @Data @AllArgsConstructor
 public class SKUWeightDTO {
     private Long weightId;
+    private WeightDTO weight;
     private Integer quantity;
 
 }
