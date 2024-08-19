@@ -2,6 +2,7 @@ package com.ecommerce.service.impl;
 
 import com.ecommerce.dto.ReviewRequestDTO;
 import com.ecommerce.dto.ReviewResponseDTO;
+import com.ecommerce.dto.UserDTO;
 import com.ecommerce.entity.Product;
 import com.ecommerce.entity.Review;
 import com.ecommerce.entity.User;
@@ -70,7 +71,9 @@ public class ReviewServiceImpl implements ReviewService {
         ReviewResponseDTO dto = new ReviewResponseDTO();
         dto.setId(review.getId());
         dto.setProductId(review.getProduct().getId());
-        dto.setUser(review.getUser());
+        User user = review.getUser();
+        UserDTO userDTO = new UserDTO(user.getId(),user.getName());
+        dto.setUser(userDTO);
         dto.setRating(review.getRating());
         dto.setComment(review.getComment());
         dto.setCreatedAt(review.getCreatedAt());

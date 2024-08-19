@@ -10,7 +10,8 @@ public class ReviewResponseDTO {
 
     private Long id;
     private Long productId;
-    private User user;
+//    private User user;
+    private UserDTO user;
     private Integer rating;
     private String comment;
     private LocalDateTime createdAt;
