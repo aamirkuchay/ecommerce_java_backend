@@ -29,9 +29,15 @@ public class ProductSKU {
     private BigDecimal price;
 
 
-    @ManyToOne
-    @JoinColumn(name = "color_id")
-    private ProductColor color;
+//    @ManyToOne
+//    @JoinColumn(name = "color_id")
+//    private List<ProductColor> color = new ArrayList<>();
+
+    @ManyToMany
+    @JoinTable(name = "product_sku_color",
+            joinColumns = @JoinColumn(name = "sku_id"),
+            inverseJoinColumns = @JoinColumn(name = "color_id"))
+    private List<ProductColor> colors = new ArrayList<>();
 
     @OneToMany(mappedBy = "sku", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SKUSize> sizes = new ArrayList<>();

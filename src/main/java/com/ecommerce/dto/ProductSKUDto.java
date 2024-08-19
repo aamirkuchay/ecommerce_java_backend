@@ -14,8 +14,7 @@ public class ProductSKUDto {
     private BigDecimal price;
     private Integer quantity;
     private Double weight;
-//    private Long colorId;
-    private ProductColorDto color;
+    private List<ProductColorDto> colors;
     private List<SKUSizeDTO> sizes;
     private List<SKUWeightDTO> weights;
     private List<SKUAttributeDto> attributes;

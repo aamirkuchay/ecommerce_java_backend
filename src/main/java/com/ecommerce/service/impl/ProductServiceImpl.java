@@ -122,9 +122,11 @@ public class ProductServiceImpl implements ProductService {
                     sku.setPrice(skuDTO.getPrice());
 
                     // Set color
-                    ProductColor color = productColorRepository.findById(skuDTO.getColor().getId())
-                            .orElseThrow(() -> new ResourceNotFoundException("Color " + skuDTO.getColor().getId()));
-                    sku.setColor(color);
+                    List<ProductColor> colors = skuDTO.getColors().stream()
+                            .map(colorDto -> productColorRepository.findById(colorDto.getId())
+                                    .orElseThrow(() -> new ResourceNotFoundException("Color " + colorDto.getId())))
+                            .collect(Collectors.toList());
+                    sku.setColors(colors);
 
                     // Set sizes
                     List<SKUSize> sizes = skuDTO.getSizes().stream()
@@ -291,12 +293,7 @@ public class ProductServiceImpl implements ProductService {
                     skuDTO.setPrice(sku.getPrice());
 
                     // Set color
-                    if (sku.getColor() != null) {
-                        ProductColorDto colorDto = new ProductColorDto();
-                        colorDto.setId(sku.getColor().getId());
-                        colorDto.setName(sku.getColor().getName());
-                        skuDTO.setColor(colorDto);
-                    }
+                    skuDTO.setColors(buildProductColorDtos(sku.getColors()));
 
                     // Set sizes with full objects
                     skuDTO.setSizes(sku.getSizes().stream()
@@ -362,6 +359,20 @@ public class ProductServiceImpl implements ProductService {
         WeightDTO dto = new WeightDTO();
         dto.setId(weight.getId());
         dto.setValue(weight.getValue());
+        return dto;
+    }
+
+    private List<ProductColorDto> buildProductColorDtos(List<ProductColor> colors) {
+        return colors.stream()
+                .map(this::buildProductColorDto)
+                .collect(Collectors.toList());
+    }
+
+
+    private ProductColorDto buildProductColorDto(ProductColor color) {
+        ProductColorDto dto = new ProductColorDto();
+        dto.setId(color.getId());
+        dto.setName(color.getName());
         return dto;
     }
 
