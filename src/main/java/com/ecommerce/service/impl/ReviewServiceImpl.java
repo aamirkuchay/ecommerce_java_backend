@@ -70,7 +70,7 @@ public class ReviewServiceImpl implements ReviewService {
         ReviewResponseDTO dto = new ReviewResponseDTO();
         dto.setId(review.getId());
         dto.setProductId(review.getProduct().getId());
-        dto.setUserId(review.getUser().getId());
+        dto.setUser(review.getUser());
         dto.setRating(review.getRating());
         dto.setComment(review.getComment());
         dto.setCreatedAt(review.getCreatedAt());
