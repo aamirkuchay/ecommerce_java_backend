@@ -35,6 +35,10 @@ public class CartItem {
     @JoinColumn(name = "weight_id",nullable = true)
     private Weight weight;
 
+    @ManyToOne
+    @JoinColumn(name = "color_id",nullable = true)
+    private ProductColor color;
+
 
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
@@ -49,6 +53,10 @@ public class CartItem {
 
     public Long getSizeId() {
         return (weight != null) ? weight.getId() : null;
+    }
+
+    public Long getColorId() {
+        return (color != null) ? color.getId() : null;
     }
 
 

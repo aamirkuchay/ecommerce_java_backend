@@ -20,7 +20,7 @@ public class CartServiceImpl implements CartService {
     private final CartItemRepository cartItemRepository;
     private final CartRepository cartRepository;
     private final UserRepository userRepository;
-
+private final  ProductColorRepository productColorRepository;
     private final SizeRepository sizeRepository;
     private final WeightRepository weightRepository;
 
@@ -35,6 +35,8 @@ public class CartServiceImpl implements CartService {
 
         Size size = cartItemDTO.getSizeId() != null ? sizeRepository.findById(cartItemDTO.getSizeId()).orElse(null) : null;
         Weight weight = cartItemDTO.getWeightId() != null ? weightRepository.findById(cartItemDTO.getWeightId()).orElse(null) : null;
+        ProductColor color = cartItemDTO.getColorId() != null ? productColorRepository.findById(cartItemDTO.getColorId()).orElse(null) : null;
+
 
         CartItem cartItem = cartItemRepository.findByCartAndProductAndSizeAndWeight(cart, product, size, weight)
                 .orElse(new CartItem());
@@ -44,6 +46,7 @@ public class CartServiceImpl implements CartService {
         cartItem.setQuantity(cartItemDTO.getQuantity());
         cartItem.setSize(size);
         cartItem.setWeight(weight);
+        cartItem.setColor(color);
         cartItemRepository.save(cartItem);
         cart.getCartItems().add(cartItem);
         cartRepository.save(cart);
@@ -85,6 +88,11 @@ public class CartServiceImpl implements CartService {
                 itemDTO.setWeightId(cartItem.getWeight().getId());
             } else {
                 itemDTO.setWeightId(null);
+            }
+            if (cartItem.getColor() != null) {
+                itemDTO.setColorId(cartItem.getColor().getId());
+            } else {
+                itemDTO.setColorId(null);
             }
             return itemDTO;
         }).collect(Collectors.toList());

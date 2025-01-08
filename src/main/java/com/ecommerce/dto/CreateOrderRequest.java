@@ -6,4 +6,7 @@ import lombok.Data;
 public class CreateOrderRequest {
     private Long userId;
 
+    public CreateOrderRequest(Long userId) {
+        this.userId = userId;
+    }
 }

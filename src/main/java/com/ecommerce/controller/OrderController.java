@@ -7,6 +7,7 @@ import com.ecommerce.entity.Order;
 import com.ecommerce.exception.ResourceNotFoundException;
 import com.ecommerce.service.OrderService;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,14 +15,15 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/orders")
 @AllArgsConstructor
+@RequestMapping("/api/orders")
 public class OrderController {
 
-    private final OrderService orderService;
+    @Autowired
+    private OrderService orderService;
 
 
-    @PostMapping
+    @PostMapping("/create-order")
     public ResponseEntity<OrderDTO> createOrder(@RequestBody CreateOrderRequest request) {
         try {
             Long userId = request.getUserId();

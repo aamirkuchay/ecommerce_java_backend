@@ -8,4 +8,5 @@ public class CartItemDTO {
     private Integer quantity;
     private Long sizeId;
     private Long weightId;
+    private Long colorId;
 }

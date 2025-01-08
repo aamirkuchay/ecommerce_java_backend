@@ -49,6 +49,7 @@ public class OrderServiceImpl implements OrderService {
 
         Cart cart = cartRepository.findByUserId(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Cart not found"));
+        System.err.println(cart.getId()+"iiiiiiiiiiiiii");
 
         if (cart.getCartItems().isEmpty()) {
             throw new ResourceNotFoundException("Cart is empty");
